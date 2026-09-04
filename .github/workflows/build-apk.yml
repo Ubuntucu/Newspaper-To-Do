@@ -43,8 +43,8 @@ jobs:
 
       - name: Generate App Icons
         run: |
-          # icon.png dosyasından Android ikonlarını otomatik üretir
-          npx cap-assets generate --android
+          # @capacitor/assets komutu doğru npm paketi üzerinden çalıştırılır
+          npx @capacitor/assets generate --android
 
       - name: Sync Capacitor
         run: |
@@ -62,3 +62,4 @@ jobs:
         with:
           name: Gunluk-Gorev-Takibi-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
+
