@@ -45,6 +45,21 @@ jobs:
         run: |
           npx @capacitor/assets generate --android
 
+      - name: Fix Kotlin Duplicate Classes
+        run: |
+          echo "android.enableJetifier=true" >> android/gradle.properties
+          echo "android.useAndroidX=true" >> android/gradle.properties
+          
+          # gradle.build dosyasına kotlin-stdlib çakışma engelleyicisini ekler
+          cat << 'EOF' >> android/app/build.gradle
+          configurations.all {
+              resolutionStrategy {
+                  force 'org.jetbrains.kotlin:kotlin-stdlib:1.8.22'
+                  force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22'
+              }
+          }
+          EOF
+
       - name: Sync Capacitor
         run: |
           npx cap copy android
