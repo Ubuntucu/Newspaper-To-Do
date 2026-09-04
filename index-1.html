@@ -1,0 +1,3611 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <title>Günlük Görev Takibi</title>
+    <meta name="description" content="Minimalist, çok dilli ve tam teşekküllü to-do list ve görev takip uygulaması." />
+    <meta property="og:title" content="Günlük Görev Takibi" />
+    <meta property="og:description" content="Minimalist, çok dilli ve tam teşekküllü to-do list ve görev takip uygulaması." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    
+    <!-- Google Fonts for Clean Minimalism Newspaper Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Inter:wght@400;500;600;700;800;900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,400;1,700&display=swap" rel="stylesheet">
+
+    <style>
+      /* ==========================================================================
+         CLEAN MINIMALISM THEME - EDITORIAL NEWSPAPER DESIGN SYSTEM
+         ========================================================================== */
+      *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg-white: #ffffff;
+        --bg-canvas: #f8f8f8;
+        --ink-black: #000000;
+        --ink-subtle: #222222;
+        --ink-muted: #555555;
+        --paper-gray: #e5e7eb;
+        --paper-border: #000000;
+        
+        --font-headline: 'Playfair Display', Georgia, 'Times New Roman', serif;
+        --font-body: 'Newsreader', Georgia, 'Times New Roman', serif;
+        --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        --font-stamp: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+
+      html {
+        font-size: 16px;
+        background-color: var(--bg-canvas);
+        color: var(--ink-black);
+        -webkit-text-size-adjust: 100%;
+      }
+
+      body {
+        font-family: var(--font-body);
+        line-height: 1.55;
+        background-color: var(--bg-canvas);
+        color: var(--ink-black);
+        min-height: 100vh;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        padding: 16px;
+      }
+
+      /* ANA BÜLTEN KAPSAYICISI (CLEAN MINIMALISM BORDER & SHADOW) */
+      .newspaper-container {
+        width: 100%;
+        max-width: 1060px;
+        margin: 0 auto;
+        background: var(--bg-white);
+        border: 5px solid var(--ink-black);
+        box-shadow: 10px 10px 0px 0px var(--ink-black);
+        padding: 28px 32px 40px 32px;
+        position: relative;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* TİPOGRAFİ VE SEÇİCİLER */
+      h1, h2, h3, h4, h5, h6 {
+        font-family: var(--font-headline);
+        font-weight: 900;
+        line-height: 1.15;
+        color: var(--ink-black);
+      }
+
+      a {
+        color: var(--ink-black);
+        text-decoration: underline;
+      }
+
+      /* BUTONLAR - CLEAN MINIMALIST HOVER INVERSION */
+      button, .btn {
+        font-family: var(--font-sans);
+        font-size: 0.82rem;
+        font-weight: 800;
+        cursor: pointer;
+        padding: 8px 16px;
+        border: 2px solid var(--ink-black);
+        background-color: var(--bg-white);
+        color: var(--ink-black);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.15s ease;
+        box-shadow: 2px 2px 0px var(--ink-black);
+        user-select: none;
+        min-height: 38px;
+        white-space: nowrap;
+      }
+
+      button:hover, .btn:hover {
+        background-color: var(--ink-black);
+        color: var(--bg-white);
+        transform: translate(1px, 1px);
+        box-shadow: 1px 1px 0px var(--ink-black);
+      }
+
+      button:active, .btn:active {
+        transform: translate(2px, 2px);
+        box-shadow: none;
+      }
+
+      button.btn-filled, .btn-filled {
+        background-color: var(--ink-black);
+        color: var(--bg-white);
+        box-shadow: 3px 3px 0px var(--ink-black);
+      }
+
+      button.btn-filled:hover, .btn-filled:hover {
+        background-color: var(--bg-white);
+        color: var(--ink-black);
+      }
+
+      button.btn-danger, .btn-danger {
+        border-color: var(--ink-black);
+        background-color: var(--bg-white);
+        color: var(--ink-black);
+      }
+
+      button.btn-danger:hover, .btn-danger:hover {
+        background-color: var(--ink-black);
+        color: var(--bg-white);
+        text-decoration: line-through;
+      }
+
+      .btn-small {
+        padding: 4px 10px;
+        font-size: 0.72rem;
+        min-height: 30px;
+        letter-spacing: 0.8px;
+      }
+
+      button.btn-icon-only, .btn-icon-only {
+        padding: 0;
+        width: 38px;
+        height: 38px;
+        min-height: 38px;
+        font-size: 1.15rem;
+      }
+
+      /* FORM ELEMANLARI */
+      input[type="text"],
+      input[type="datetime-local"],
+      input[type="date"],
+      select,
+      textarea {
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        padding: 8px 12px;
+        border: 2px solid var(--ink-black);
+        background-color: var(--bg-white);
+        color: var(--ink-black);
+        border-radius: 0;
+        width: 100%;
+        transition: box-shadow 0.15s ease;
+        outline: none;
+      }
+
+      input[type="text"]:focus,
+      input[type="datetime-local"]:focus,
+      input[type="date"]:focus,
+      select:focus,
+      textarea:focus {
+        box-shadow: 3px 3px 0px var(--ink-black);
+      }
+
+      input::placeholder {
+        color: #777777;
+        font-style: italic;
+      }
+
+      /* BAŞLIK BÖLÜMÜ (MASTHEAD) */
+      .masthead {
+        border-bottom: 4px solid var(--ink-black);
+        padding-bottom: 14px;
+        margin-bottom: 22px;
+        position: relative;
+      }
+
+      .masthead-top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--ink-black);
+        padding-bottom: 6px;
+        margin-bottom: 10px;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        font-family: var(--font-sans);
+        font-weight: 800;
+        letter-spacing: 1.5px;
+      }
+
+      .masthead-controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .masthead-title-wrap {
+        text-align: center;
+        margin: 6px 0 10px 0;
+      }
+
+      .masthead-main-title {
+        font-family: var(--font-headline);
+        font-size: clamp(2.3rem, 6.5vw, 4.2rem);
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: -2px;
+        line-height: 0.95;
+        margin-bottom: 6px;
+      }
+
+      .masthead-tagline {
+        font-style: italic;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--ink-subtle);
+      }
+
+      .masthead-meta-bar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-top: 2px solid var(--ink-black);
+        border-bottom: 2px solid var(--ink-black);
+        padding: 7px 4px;
+        font-size: 0.8rem;
+        font-family: var(--font-sans);
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-align: center;
+      }
+
+      /* SİYAH-BEYAZ VEKTÖR İKONLAR (ÖZEL TASARIM, EMOJİSİZ) */
+      .bw-icon {
+        display: inline-block;
+        width: 1.15em;
+        height: 1.15em;
+        vertical-align: -0.16em;
+        flex-shrink: 0;
+      }
+
+      .bw-icon-fill {
+        fill: currentColor;
+        stroke: none;
+      }
+
+      .bw-icon-lg {
+        width: 2.75rem;
+        height: 2.75rem;
+        stroke: var(--ink-black);
+      }
+
+      /* SAYFA / SEKME NAVİGASYONU */
+      .newspaper-nav {
+        display: flex;
+        border-bottom: 4px solid var(--ink-black);
+        margin-bottom: 24px;
+        gap: 6px;
+      }
+
+      .nav-tab-btn {
+        flex: 1 1 0;
+        min-width: 0;
+        background: var(--bg-white);
+        border: 2px solid var(--ink-black);
+        box-shadow: none;
+        padding: 11px 8px;
+        font-family: var(--font-sans);
+        font-size: 0.82rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        cursor: pointer;
+        color: var(--ink-black);
+        transition: all 0.15s ease;
+        text-align: center;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        position: relative;
+      }
+
+      .nav-tab-btn:hover {
+        background-color: var(--ink-black);
+        color: var(--bg-white);
+        transform: none;
+        box-shadow: none;
+      }
+
+      .nav-tab-btn.active {
+        background-color: var(--ink-black);
+        color: var(--bg-white);
+        border-color: var(--ink-black);
+      }
+
+      /* SAYFALAR */
+      .newspaper-section {
+        display: none;
+        animation: fadeIn 0.25s ease;
+      }
+
+      .newspaper-section.active {
+        display: block;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(4px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      /* BÖLÜM BAŞLIĞI / MANŞET ÇİZGİSİ */
+      .section-headline-bar {
+        border-bottom: 3px solid var(--ink-black);
+        padding-bottom: 8px;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .section-headline-title {
+        font-family: var(--font-headline);
+        font-size: 1.4rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: -0.5px;
+        text-decoration: underline;
+        text-decoration-thickness: 3px;
+        text-underline-offset: 4px;
+      }
+
+      /* CHECKBOX'LAR - TEMİZ MİNİMALİST KUTULAR */
+      .newspaper-checkbox {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 24px;
+        height: 24px;
+        min-width: 24px;
+        min-height: 24px;
+        border: 2px solid var(--ink-black);
+        background-color: var(--bg-white);
+        cursor: pointer;
+        display: inline-grid;
+        place-content: center;
+        margin: 0;
+        position: relative;
+        transition: all 0.15s ease;
+      }
+
+      .newspaper-checkbox:hover {
+        box-shadow: 2px 2px 0px var(--ink-black);
+      }
+
+      .newspaper-checkbox:checked {
+        background-color: var(--ink-black);
+      }
+
+      .newspaper-checkbox:checked::after {
+        content: "✓";
+        color: var(--bg-white);
+        font-size: 16px;
+        font-weight: 900;
+        line-height: 1;
+      }
+
+      /* ALT GÖREV CHECKBOX */
+      .subtask-checkbox {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 19px;
+        height: 19px;
+        min-width: 19px;
+        min-height: 19px;
+        border: 2px solid var(--ink-black);
+        background-color: var(--bg-white);
+        cursor: pointer;
+        display: inline-grid;
+        place-content: center;
+        margin: 0;
+        transition: all 0.15s ease;
+      }
+
+      .subtask-checkbox:hover {
+        box-shadow: 1px 1px 0px var(--ink-black);
+      }
+
+      .subtask-checkbox:checked {
+        background-color: var(--ink-black);
+      }
+
+      .subtask-checkbox:checked::after {
+        content: "✓";
+        color: var(--bg-white);
+        font-size: 12px;
+        font-weight: 900;
+        line-height: 1;
+      }
+
+      /* GÖREV KARTLARI */
+      .task-item {
+        border-bottom: 2px solid var(--ink-black);
+        padding: 16px 0;
+        transition: background-color 0.15s ease;
+      }
+
+      .task-item:last-child {
+        border-bottom: 3px solid var(--ink-black);
+      }
+
+      .task-header-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        justify-content: space-between;
+      }
+
+      .task-main-content {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        flex: 1;
+      }
+
+      .task-title {
+        font-family: var(--font-headline);
+        font-size: 1.15rem;
+        font-weight: 800;
+        line-height: 1.3;
+        word-break: break-word;
+        text-transform: uppercase;
+      }
+
+      .task-title.completed {
+        text-decoration: line-through;
+        color: var(--ink-muted);
+      }
+
+      .task-metadata {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 14px;
+        margin-top: 4px;
+        font-size: 0.8rem;
+        font-family: var(--font-sans);
+        font-weight: 600;
+        color: var(--ink-subtle);
+      }
+
+      .task-badge {
+        font-family: var(--font-sans);
+        font-size: 0.68rem;
+        font-weight: 800;
+        padding: 2px 8px;
+        border: 1.5px solid var(--ink-black);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .badge-high {
+        background-color: var(--ink-black);
+        color: var(--bg-white);
+      }
+
+      .badge-medium {
+        background-color: var(--bg-white);
+        color: var(--ink-black);
+      }
+
+      .badge-low {
+        background-color: var(--bg-white);
+        color: var(--ink-black);
+        border-style: dashed;
+      }
+
+      .task-actions {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      /* ALT GÖREVLER (Subtasks) */
+      .subtasks-container {
+        margin-top: 10px;
+        margin-left: 36px;
+        padding-left: 12px;
+        border-left: 2px solid var(--ink-black);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .subtask-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.95rem;
+      }
+
+      .subtask-bullet {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        min-width: 6px;
+        min-height: 6px;
+        background-color: var(--ink-black);
+        border-radius: 50%;
+        flex-shrink: 0;
+        margin-right: 2px;
+        overflow: hidden;
+        line-height: 0;
+        font-size: 0;
+        color: transparent;
+        user-select: none;
+      }
+
+      .subtask-text {
+        flex: 1;
+        word-break: break-word;
+      }
+
+      .subtask-text.completed {
+        text-decoration: line-through;
+        color: var(--ink-muted);
+      }
+
+      .btn-subtask-del {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        color: var(--ink-muted);
+        cursor: pointer;
+        padding: 4px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 28px;
+        min-height: 28px;
+        margin-left: auto;
+        transition: color 0.15s ease, transform 0.15s ease;
+      }
+
+      .btn-subtask-del:hover {
+        background: transparent;
+        color: #b91c1c;
+        transform: scale(1.15);
+        box-shadow: none;
+      }
+
+      /* SAYFA 1: YÜZDE & İSTATİSTİKLER & GÖREV KAYIT SİSTEMİ */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      .stat-card {
+        border: 2px solid var(--ink-black);
+        padding: 18px 16px;
+        text-align: center;
+        position: relative;
+        background-color: var(--bg-white);
+        box-shadow: 4px 4px 0px var(--ink-black);
+      }
+
+      .stat-card-title {
+        font-family: var(--font-sans);
+        font-size: 0.75rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 8px;
+        border-bottom: 2px solid var(--ink-black);
+        padding-bottom: 4px;
+      }
+
+      .stat-card-value {
+        font-family: var(--font-headline);
+        font-size: 2.8rem;
+        font-weight: 900;
+        line-height: 1.05;
+      }
+
+      /* İNTERAKTİF DAİRE DİLİMİ TAMAMLANMA ORANI (PIE / DONUT SLICE) */
+      .interactive-pie-container {
+        border: 2px solid var(--ink-black);
+        background-color: var(--bg-white);
+        box-shadow: 4px 4px 0px var(--ink-black);
+        padding: 24px;
+        margin-bottom: 24px;
+      }
+
+      .pie-chart-header {
+        border-bottom: 2px solid var(--ink-black);
+        padding-bottom: 12px;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .pie-chart-title {
+        font-family: var(--font-headline);
+        font-size: 1.25rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .pie-chart-subtitle {
+        font-family: var(--font-sans);
+        font-size: 0.8rem;
+        color: var(--ink-subtle);
+        font-weight: 500;
+      }
+
+      .pie-chart-layout {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 28px;
+      }
+
+      .pie-svg-wrapper {
+        position: relative;
+        width: 220px;
+        height: 220px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .pie-svg {
+        overflow: visible;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08));
+      }
+
+      .chart-slice {
+        transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease, filter 0.2s ease;
+        transform-origin: 110px 110px;
+        cursor: pointer;
+      }
+
+      .chart-slice:hover,
+      .chart-slice.highlighted {
+        transform: scale(1.045);
+        filter: drop-shadow(0 6px 12px rgba(0,0,0,0.22));
+      }
+
+      .pie-center-content {
+        position: absolute;
+        width: 116px;
+        height: 116px;
+        border-radius: 50%;
+        background-color: var(--bg-white);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        text-align: center;
+        padding: 4px;
+      }
+
+      .pie-center-value {
+        font-family: var(--font-headline);
+        font-size: 2.2rem;
+        font-weight: 900;
+        line-height: 1;
+        color: var(--ink-black);
+        transition: all 0.2s ease;
+      }
+
+      .pie-center-label {
+        font-family: var(--font-sans);
+        font-size: 0.7rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--ink-subtle);
+        margin-top: 2px;
+      }
+
+      .pie-center-sub {
+        font-family: var(--font-sans);
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: var(--ink-black);
+        margin-top: 2px;
+      }
+
+      .pie-legend-wrapper {
+        flex: 1;
+        min-width: 250px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .pie-legend-item {
+        border: 2px solid var(--ink-black);
+        background-color: var(--bg-white);
+        box-shadow: 3px 3px 0px var(--ink-black);
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+      }
+
+      .pie-legend-item:hover,
+      .pie-legend-item.active-hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 5px 5px 0px var(--ink-black);
+        background-color: #fafafa;
+      }
+
+      .legend-color-box {
+        width: 18px;
+        height: 18px;
+        border: 2px solid var(--ink-black);
+        flex-shrink: 0;
+      }
+
+      .legend-color-box.bg-completed {
+        background-color: var(--ink-black);
+      }
+
+      .legend-color-box.bg-pending {
+        background-color: #e5e5e5;
+      }
+
+      .legend-text-col {
+        flex: 1;
+      }
+
+      .legend-title {
+        font-family: var(--font-sans);
+        font-size: 0.82rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .legend-meta {
+        font-family: var(--font-sans);
+        font-size: 0.85rem;
+        color: var(--ink-subtle);
+        font-weight: 600;
+        margin-top: 2px;
+      }
+
+      .legend-action-arrow {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: var(--ink-muted);
+        transition: transform 0.15s ease, color 0.15s ease;
+      }
+
+      .pie-legend-item:hover .legend-action-arrow {
+        transform: translateX(4px);
+        color: var(--ink-black);
+      }
+
+      .pie-interactive-badge {
+        font-family: var(--font-sans);
+        font-size: 0.78rem;
+        color: var(--ink-subtle);
+        background-color: var(--paper-gray);
+        border: 1px dashed var(--ink-black);
+        padding: 8px 12px;
+        text-align: center;
+        font-weight: 600;
+      }
+
+      /* İLERLEME ÇUBUĞU - CLEAN MINIMALISM ACCENT */
+      .progress-outer {
+        width: 100%;
+        height: 32px;
+        border: 2px solid var(--ink-black);
+        background-color: var(--paper-gray);
+        margin: 12px 0 20px 0;
+        padding: 2px;
+        box-shadow: 3px 3px 0px var(--ink-black);
+      }
+
+      .progress-inner {
+        height: 100%;
+        background-color: var(--ink-black);
+        width: 0%;
+        transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* GÜNLÜK GÖREV KAYIT & ARŞİV BÖLÜMÜ */
+      .archive-section {
+        border: 2px solid var(--ink-black);
+        padding: 20px;
+        margin-top: 24px;
+        box-shadow: 4px 4px 0px var(--ink-black);
+        background: var(--bg-white);
+      }
+
+      .archive-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        border-bottom: 2px solid var(--ink-black);
+        padding-bottom: 12px;
+        margin-bottom: 16px;
+      }
+
+      .date-picker-wrap {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      /* SAYFA 2: SALT LİSTE KONTROLLERİ */
+      .list-controls-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding-bottom: 14px;
+        border-bottom: 2px solid var(--ink-black);
+        margin-bottom: 18px;
+      }
+
+      .search-box-wrap {
+        flex: 1;
+        min-width: 220px;
+      }
+
+      .sort-filter-wrap {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      /* SAYFA 3: DÜZENLE & EKLE */
+      .form-section {
+        border: 2px solid var(--ink-black);
+        padding: 22px;
+        margin-bottom: 24px;
+        box-shadow: 4px 4px 0px var(--ink-black);
+        background: var(--bg-white);
+      }
+
+      .form-group {
+        margin-bottom: 14px;
+      }
+
+      .form-label {
+        display: block;
+        font-family: var(--font-sans);
+        font-weight: 800;
+        font-size: 0.75rem;
+        margin-bottom: 4px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .form-row-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      @media (max-width: 600px) {
+        .form-row-2 {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .subtasks-draft-list {
+        margin-top: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .draft-subtask-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 12px;
+        border: 1.5px solid var(--ink-black);
+        font-size: 0.9rem;
+        background-color: var(--bg-white);
+      }
+
+      /* ONBOARDING KARŞILAMA SUNUMU (CLEAN MINIMALISM HERO OVERLAY) */
+      .onboarding-overlay {
+        position: fixed;
+        inset: 0;
+        background-color: rgba(255, 255, 255, 0.96);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        backdrop-filter: blur(2px);
+      }
+
+      .onboarding-overlay.hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+
+      .onboarding-card {
+        width: 100%;
+        max-width: 640px;
+        border: 6px solid var(--ink-black);
+        padding: 32px 28px;
+        background: var(--bg-white);
+        box-shadow: 14px 14px 0px 0px var(--ink-black);
+        text-align: center;
+        position: relative;
+        animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      @media (min-width: 640px) {
+        .onboarding-card {
+          border-width: 8px;
+          box-shadow: 18px 18px 0px 0px var(--ink-black);
+          padding: 40px 36px;
+        }
+      }
+
+      @keyframes slideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .onboarding-masthead-stamp {
+        font-family: var(--font-sans);
+        font-size: 0.8rem;
+        font-weight: 800;
+        letter-spacing: 2px;
+        border-bottom: 2px solid var(--ink-black);
+        padding-bottom: 8px;
+        margin-bottom: 16px;
+        text-transform: uppercase;
+      }
+
+      .onboarding-title {
+        font-family: var(--font-headline);
+        font-size: clamp(1.8rem, 4.5vw, 2.6rem);
+        font-weight: 900;
+        text-transform: uppercase;
+        line-height: 1.1;
+        margin-bottom: 14px;
+        text-decoration: underline;
+        text-decoration-thickness: 4px;
+        text-underline-offset: 6px;
+        letter-spacing: -0.5px;
+      }
+
+      .onboarding-body {
+        font-size: 1.05rem;
+        line-height: 1.6;
+        margin-bottom: 24px;
+        color: var(--ink-black);
+        min-height: 110px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-top: 2px solid var(--ink-black);
+        border-bottom: 2px solid var(--ink-black);
+        padding: 18px 0;
+      }
+
+      .onboarding-step-dots {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 22px;
+      }
+
+      .step-dot {
+        width: 12px;
+        height: 12px;
+        border: 2px solid var(--ink-black);
+        background-color: var(--bg-white);
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .step-dot.active {
+        background-color: var(--ink-black);
+        transform: scale(1.2);
+      }
+
+      .onboarding-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+      }
+
+      /* AYARLAR VE DÜZENLEME MODALI (CLEAN MINIMALISM CARD) */
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease, visibility 0.2s ease;
+      }
+
+      .modal-backdrop.open {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .modal-card {
+        background-color: var(--bg-white);
+        border: 4px solid var(--ink-black);
+        box-shadow: 8px 8px 0px var(--ink-black);
+        width: 100%;
+        max-width: 500px;
+        padding: 26px;
+        position: relative;
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 3px solid var(--ink-black);
+        padding-bottom: 10px;
+        margin-bottom: 18px;
+      }
+
+      .modal-title {
+        font-family: var(--font-headline);
+        font-size: 1.35rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: -0.5px;
+      }
+
+      .lang-btn-group {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin: 12px 0 20px 0;
+      }
+
+      .lang-btn {
+        padding: 10px 6px;
+        font-weight: 800;
+        font-size: 0.85rem;
+      }
+
+      .lang-btn.active {
+        background-color: var(--ink-black);
+        color: var(--bg-white);
+      }
+
+      /* TOAST BİLDİRİMİ */
+      .toast {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background-color: var(--ink-black);
+        color: var(--bg-white);
+        padding: 10px 20px;
+        border: 2px solid var(--ink-black);
+        font-family: var(--font-sans);
+        font-weight: 700;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        z-index: 10000;
+        box-shadow: 4px 4px 0px rgba(0,0,0,0.4);
+        transform: translateY(100px);
+        opacity: 0;
+        transition: all 0.3s ease;
+        pointer-events: none;
+      }
+
+      .toast.show {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      /* BOŞ LİSTE DURUMU */
+      .empty-state {
+        text-align: center;
+        padding: 40px 16px;
+        border: 2px dashed var(--ink-black);
+        margin: 20px 0;
+        background-color: var(--bg-white);
+      }
+
+      .empty-state-title {
+        font-family: var(--font-headline);
+        font-size: 1.35rem;
+        font-weight: 800;
+        margin-bottom: 6px;
+      }
+
+      /* ALT BİLGİ (FOOTER) */
+      .newspaper-footer {
+        margin-top: auto;
+        padding-top: 24px;
+        border-top: 4px solid var(--ink-black);
+        text-align: center;
+        font-size: 0.78rem;
+        font-family: var(--font-sans);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--ink-subtle);
+      }
+
+      /* MOBİL VE KÜÇÜK EKRAN UYUMLULUĞU */
+      @media (max-width: 640px) {
+        body {
+          padding: 6px;
+        }
+
+        .newspaper-container {
+          border-width: 3px;
+          box-shadow: 4px 4px 0px var(--ink-black);
+          padding: 14px 10px 24px 10px;
+        }
+
+        .masthead-main-title {
+          font-size: clamp(2rem, 8vw, 3rem);
+          letter-spacing: 0;
+          word-break: break-word;
+        }
+
+        .masthead-tagline {
+          font-size: 0.8rem;
+          line-height: 1.4;
+        }
+
+        .masthead-meta-bar {
+          font-size: 0.75rem;
+          letter-spacing: 1.2px;
+          padding: 6px 4px;
+        }
+
+        .newspaper-nav {
+          gap: 4px;
+          margin-bottom: 18px;
+        }
+
+        .nav-tab-btn {
+          padding: 8px 4px;
+          font-size: 0.72rem;
+          flex-direction: column;
+          gap: 4px;
+          min-height: 48px;
+        }
+
+        .nav-tab-btn .bw-icon {
+          width: 1.2em;
+          height: 1.2em;
+        }
+
+        .interactive-pie-container {
+          padding: 16px 10px;
+        }
+
+        .pie-chart-layout {
+          gap: 18px;
+        }
+
+        .pie-legend-wrapper {
+          min-width: 100%;
+          width: 100%;
+          gap: 8px;
+        }
+
+        .pie-legend-item {
+          padding: 10px 12px;
+          gap: 10px;
+        }
+
+        .list-controls-bar {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 10px;
+        }
+
+        .sort-filter-wrap {
+          flex-wrap: wrap;
+          width: 100%;
+          gap: 8px;
+        }
+
+        .sort-filter-wrap select {
+          flex: 1 1 120px;
+          min-width: 0;
+        }
+
+        .form-row-2 {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+
+        .task-header-row {
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .task-actions {
+          width: 100%;
+          justify-content: flex-end;
+          border-top: 1px solid var(--paper-gray);
+          padding-top: 8px;
+          gap: 8px;
+        }
+
+        .subtasks-container {
+          margin-left: 14px;
+          padding-left: 8px;
+        }
+
+        .subtask-row {
+          font-size: 0.88rem;
+          gap: 8px;
+          padding: 2px 0;
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr;
+          gap: 10px;
+        }
+
+        .date-picker-wrap {
+          width: 100%;
+          flex-wrap: wrap;
+          gap: 6px;
+        }
+
+        .date-picker-wrap input[type="date"] {
+          flex: 1 1 150px;
+        }
+
+        .modal-card {
+          width: calc(100vw - 20px);
+          max-width: 480px;
+          max-height: 92vh;
+          padding: 20px 14px;
+        }
+
+        .onboarding-card {
+          width: calc(100vw - 20px);
+          padding: 20px 14px;
+        }
+
+        input[type="text"],
+        input[type="datetime-local"],
+        input[type="date"],
+        select {
+          font-size: 16px; /* Prevents auto-zoom on iOS */
+          min-height: 42px;
+        }
+
+        .btn {
+          min-height: 40px;
+        }
+
+        .btn-small {
+          min-height: 36px;
+          padding: 6px 12px;
+        }
+
+        .btn-icon-only {
+          min-width: 44px;
+          min-height: 44px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- TEK SEFERLİK ANİMASYONLU ONBOARDING KARŞILAMA SUNUMU -->
+    <div id="onboardingOverlay" class="onboarding-overlay hidden">
+      <div class="onboarding-card">
+        <div class="onboarding-masthead-stamp" id="onboardingStamp">
+          <svg class="bw-icon" style="width:14px;height:14px;fill:currentColor;stroke:none;margin-right:5px;" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span id="onboardingStampText">GÜNLÜK ÖZEL İLK BASKI</span>
+          <svg class="bw-icon" style="width:14px;height:14px;fill:currentColor;stroke:none;margin-left:5px;" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <h2 class="onboarding-title" id="onboardingTitle">
+          Hoş Geldiniz!
+        </h2>
+        <div class="onboarding-body" id="onboardingBody">
+          <!-- Dinamik slayt içeriği -->
+        </div>
+        
+        <div class="onboarding-step-dots" id="onboardingDots">
+          <span class="step-dot active" onclick="goToOnboardingStep(0)"></span>
+          <span class="step-dot" onclick="goToOnboardingStep(1)"></span>
+          <span class="step-dot" onclick="goToOnboardingStep(2)"></span>
+          <span class="step-dot" onclick="goToOnboardingStep(3)"></span>
+        </div>
+
+        <div class="onboarding-footer">
+          <button id="onboardingPrevBtn" class="btn btn-small" onclick="prevOnboardingStep()">
+            ← Geri
+          </button>
+          <button id="onboardingNextBtn" class="btn btn-filled btn-small" onclick="nextOnboardingStep()">
+            İleri →
+          </button>
+          <button id="onboardingFinishBtn" class="btn btn-filled" style="display: none;" onclick="finishOnboarding()">
+            Keşfetmeye Başla
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AYARLAR MODAL (Çark simgesi ile açılır) -->
+    <div id="settingsModal" class="modal-backdrop">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 class="modal-title" id="settingsModalTitle">Uygulama Ayarları</h3>
+          <button class="btn btn-small" onclick="closeSettingsModal()" aria-label="Kapat" style="padding: 4px 8px;">
+            <svg class="bw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" id="langSelectLabel">Uygulama Dili / Language</label>
+          <div class="lang-btn-group">
+            <button type="button" class="btn lang-btn" id="langBtnTr" onclick="changeLanguage('tr')">
+              Türkçe
+            </button>
+            <button type="button" class="btn lang-btn" id="langBtnEn" onclick="changeLanguage('en')">
+              English
+            </button>
+            <button type="button" class="btn lang-btn" id="langBtnDe" onclick="changeLanguage('de')">
+              Deutsch
+            </button>
+            <button type="button" class="btn lang-btn" id="langBtnIt" onclick="changeLanguage('it')">
+              Italiano
+            </button>
+            <button type="button" class="btn lang-btn" id="langBtnRu" onclick="changeLanguage('ru')">
+              Русский
+            </button>
+            <button type="button" class="btn lang-btn" id="langBtnFr" onclick="changeLanguage('fr')">
+              Français
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 16px; border-top: 1px solid var(--ink-black); padding-top: 16px;">
+          <label class="form-label" id="reopenGuideLabel">Başlangıç Rehberi</label>
+          <p style="font-size: 0.9rem; margin-bottom: 10px; color: var(--ink-subtle);" id="reopenGuideDesc">
+            İlk açılış sunumunu ve uygulama tanıtımını tekrar izleyebilirsiniz.
+          </p>
+          <button type="button" class="btn" onclick="reopenOnboarding()" id="reopenGuideBtn">
+            <svg class="bw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>
+            <span id="txtReopenGuide">Sunumu Tekrar Başlat</span>
+          </button>
+        </div>
+
+        <div class="form-group" style="margin-top: 16px; border-top: 1px solid var(--ink-black); padding-top: 16px;">
+          <label class="form-label" id="storageInfoLabel">Veri Yönetimi</label>
+          <button type="button" class="btn btn-danger btn-small" onclick="confirmClearAllData()" id="clearAllDataBtn">
+            Tüm Verileri Temizle
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DÜZENLEME MODALI (Mevcut bir görevi ve alt görevlerini güncelleme) -->
+    <div id="editTaskModal" class="modal-backdrop">
+      <div class="modal-card" style="max-width: 600px;">
+        <div class="modal-header">
+          <h3 class="modal-title" id="editModalHeading">Görevi Düzenle</h3>
+          <button class="btn btn-small" onclick="closeEditModal()" aria-label="Kapat" style="padding: 4px 8px;">
+            <svg class="bw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <form id="editTaskForm" onsubmit="saveEditedTask(event)">
+          <input type="hidden" id="editTaskId" />
+          <div class="form-group">
+            <label class="form-label" id="editTaskTitleLabel">Görev Başlığı</label>
+            <input type="text" id="editTaskTitle" required />
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label" id="editTaskDateLabel">Tarih & Saat</label>
+              <input type="datetime-local" id="editTaskDate" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" id="editTaskPriorityLabel">Öncelik</label>
+              <select id="editTaskPriority">
+                <option value="high" id="optEditHigh">Yüksek Öncelik</option>
+                <option value="medium" id="optEditMedium">Orta Öncelik</option>
+                <option value="low" id="optEditLow">Düşük Öncelik</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" id="editSubtasksLabel">Alt Görevler</label>
+            <div style="display: flex; gap: 8px;">
+              <input type="text" id="editNewSubtaskInput" placeholder="Alt görev adı..." />
+              <button type="button" class="btn btn-small" onclick="addEditModalSubtask()" id="btnAddEditSubtask">+ Ekle</button>
+            </div>
+            <div id="editSubtasksList" class="subtasks-draft-list"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px; flex-wrap: wrap; gap: 10px;">
+            <button type="button" class="btn btn-danger btn-small" onclick="deleteFromEditModal()" id="btnDeleteInEdit">
+              <svg class="bw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+              <span>Sil</span>
+            </button>
+            <div style="display: flex; gap: 10px;">
+              <button type="button" class="btn" onclick="closeEditModal()" id="btnCancelEdit">İptal</button>
+              <button type="submit" class="btn btn-filled" id="btnSaveEdit">Kaydet</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ÖZEL ONAY MODALI (Tarayıcı confirm engeline takılmayan in-app onay penceresi) -->
+    <div id="confirmModal" class="modal-backdrop">
+      <div class="modal-card" style="max-width: 440px; text-align: center;">
+        <div style="display: flex; justify-content: center; margin-bottom: 12px;">
+          <svg class="bw-icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/>
+            <path d="M18 14h-8"/>
+            <path d="M15 18h-5"/>
+            <path d="M10 6h8v4h-8V6Z"/>
+          </svg>
+        </div>
+        <div class="modal-header" style="justify-content: center; border-bottom: 2px solid var(--ink-black); margin-bottom: 14px; padding-bottom: 8px;">
+          <h3 class="modal-title" id="confirmModalTitle">Görevi Sil</h3>
+        </div>
+        <p id="confirmModalMessage" style="font-size: 1rem; margin-bottom: 22px; color: var(--ink-black); line-height: 1.5; font-family: var(--font-body);"></p>
+        <div style="display: flex; justify-content: center; gap: 12px;">
+          <button type="button" class="btn" id="confirmModalCancelBtn" onclick="closeConfirmModal()">İptal</button>
+          <button type="button" class="btn btn-filled btn-danger" id="confirmModalAcceptBtn" onclick="handleConfirmModalAccept()">Sil</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANA UYGULAMA KAPSAYICISI -->
+    <div class="newspaper-container">
+      
+      <!-- BÜLTEN MASTHEAD (ÜST MANŞET) -->
+      <header class="masthead">
+        <div class="masthead-top-bar">
+          <span id="editionLabel">Özel Günlük Görev Baskısı</span>
+          <div class="masthead-controls">
+            <button class="btn btn-icon-only" onclick="openSettingsModal()" title="Ayarlar / Settings" aria-label="Ayarlar">
+              <svg class="bw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="masthead-title-wrap">
+          <h1 class="masthead-main-title" id="mastheadTitle">GÜNLÜK BÜLTEN</h1>
+          <p class="masthead-tagline" id="mastheadTagline">Planlama ve Görev Takip Bülteni • "Bugünün işini yarına bırakma"</p>
+        </div>
+
+        <div class="masthead-meta-bar">
+          <span id="currentDateDisplay">4 Eylül 2026</span>
+        </div>
+      </header>
+
+      <!-- AYRI SAYFALAR / SEKME NAVİGASYONU -->
+      <nav class="newspaper-nav" aria-label="Bölüm Navigasyonu">
+        <button class="nav-tab-btn active" id="tabBtnStats" onclick="switchSection('stats')">
+          <svg class="bw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/><path d="M3 20h18"/></svg>
+          <span id="tabTitleStats">İstatistik</span>
+        </button>
+        <button class="nav-tab-btn" id="tabBtnList" onclick="switchSection('list')">
+          <svg class="bw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+          <span id="tabTitleList">Salt Liste</span>
+        </button>
+        <button class="nav-tab-btn" id="tabBtnManage" onclick="switchSection('manage')">
+          <svg class="bw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+          <span id="tabTitleManage">Düzenle &amp; Ekle</span>
+        </button>
+      </nav>
+
+      <!-- ============================================== -->
+      <!-- SAYFA 1: TAMAMLANMA YÜZDESİ & GÖREV KAYIT SİSTEMİ -->
+      <!-- ============================================== -->
+      <section id="sectionStats" class="newspaper-section active">
+        <div class="section-headline-bar">
+          <h2 class="section-headline-title" id="headlineStats">GÜNLÜK BASKI PERFORMANS RAPORU</h2>
+          <span class="task-badge" id="statsLiveBadge">Canlı Kayıt</span>
+        </div>
+
+        <!-- İNTERAKTİF DAİRE DİLİMİ TAMAMLANMA ORANI (PIE / DONUT CHART) -->
+        <div class="interactive-pie-container">
+          <div class="pie-chart-header">
+            <h3 class="pie-chart-title" id="lblCompletionRate">Tamamlanma Oranı (Daire Dilimi)</h3>
+            <span class="pie-chart-subtitle" id="lblPieHint">Detaylar için daire dilimlerinin üzerine gelebilir veya tıklayabilirsiniz</span>
+          </div>
+          
+          <div class="pie-chart-layout">
+            <div class="pie-svg-wrapper">
+              <svg id="interactivePieSvg" viewBox="0 0 220 220" width="220" height="220" class="pie-svg" aria-label="Tamamlanma Oranı Grafiği">
+                <!-- Dilimler JavaScript ile çizilecek -->
+              </svg>
+              <!-- Daire içi dinamik metin kutusu -->
+              <div class="pie-center-content" id="pieCenterContent">
+                <div class="pie-center-value" id="statPercentageText">0%</div>
+                <div class="pie-center-label" id="pieCenterLabel">Tamamlandı</div>
+                <div class="pie-center-sub" id="pieCenterSub">0/0 Görev</div>
+              </div>
+            </div>
+
+            <!-- İnteraktif Açıklama & Dilim Kontrolleri -->
+            <div class="pie-legend-wrapper">
+              <div class="pie-legend-item legend-completed" id="legendCompleted" 
+                   onmouseenter="highlightPieSlice('completed')" 
+                   onmouseleave="resetPieSliceHighlight()"
+                   onclick="filterBySlice('completed')"
+                   title="Tamamlanan görevleri filtrele">
+                <div class="legend-color-box bg-completed"></div>
+                <div class="legend-text-col">
+                  <div class="legend-title" id="legendCompletedTitle">Tamamlanan Görevler</div>
+                  <div class="legend-meta" id="legendCompletedMeta">0 Görev (%0)</div>
+                </div>
+                <span class="legend-action-arrow">→</span>
+              </div>
+
+              <div class="pie-legend-item legend-pending" id="legendPending" 
+                   onmouseenter="highlightPieSlice('pending')" 
+                   onmouseleave="resetPieSliceHighlight()"
+                   onclick="filterBySlice('pending')"
+                   title="Bekleyen görevleri filtrele">
+                <div class="legend-color-box bg-pending"></div>
+                <div class="legend-text-col">
+                  <div class="legend-title" id="legendPendingTitle">Bekleyen Görevler</div>
+                  <div class="legend-meta" id="legendPendingMeta">0 Görev (%0)</div>
+                </div>
+                <span class="legend-action-arrow">→</span>
+              </div>
+
+              <div class="pie-interactive-badge" id="pieStatusBadge">
+                <svg class="bw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-right:4px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <span id="pieStatusBadgeText">Dilimlere tıklayarak listeyi filtreleyebilirsiniz</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- İstatistik Kartları -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card-title" id="lblTotalTasks">Toplam Görev</div>
+            <div class="stat-card-value" id="statTotalCount">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-title" id="lblCompletedTasks">Tamamlanan</div>
+            <div class="stat-card-value" id="statCompletedCount">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-title" id="lblPendingTasks">Bekleyen</div>
+            <div class="stat-card-value" id="statPendingCount">0</div>
+          </div>
+        </div>
+
+        <!-- GÖREV KAYIT SİSTEMİ (Herhangi bir gündeki tamamlanan/tamamlanmayan görevleri görebilme) -->
+        <div class="archive-section">
+          <div class="archive-header">
+            <div>
+              <h3 style="font-family: var(--font-headline); font-size: 1.2rem; font-weight: 800; text-transform: uppercase;" id="archiveHeading">
+                Tarih Bazlı Görev Kayıt Arşivi
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--ink-subtle);" id="archiveDesc">
+                Herhangi bir gün seçerek o tarihteki yapılmış ve yapılmamış görevleri inceleyin.
+              </p>
+            </div>
+
+            <div class="date-picker-wrap">
+              <input type="date" id="archiveDatePicker" onchange="renderArchiveLog()" />
+              <button class="btn btn-small" onclick="setArchiveToday()" id="btnArchiveToday">Bugün</button>
+              <button class="btn btn-small" onclick="clearArchiveFilter()" id="btnArchiveAll">Tümü</button>
+            </div>
+          </div>
+
+          <div id="archiveDateSummary" style="font-weight: 700; margin-bottom: 12px; font-family: var(--font-headline);"></div>
+
+          <div id="archiveTasksContainer">
+            <!-- Dinamik arşiv listesi -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- SAYFA 2: GÖREVLERİN SALT LİSTELENDİĞİ KISIM -->
+      <!-- ============================================== -->
+      <section id="sectionList" class="newspaper-section">
+        <div class="section-headline-bar">
+          <h2 class="section-headline-title" id="headlineList">MANŞET GÖREVLER BÜLTENİ</h2>
+          <span style="font-size: 0.85rem; font-style: italic;" id="pureListCountInfo">0 Görev Listeleniyor</span>
+        </div>
+
+        <!-- Sıralama ve Arama Seçenekleri (A-Z, Öncelik, Manuel) -->
+        <div class="list-controls-bar">
+          <div class="search-box-wrap">
+            <input type="text" id="listSearchInput" placeholder="Görevlerde ara..." oninput="filterAndRenderPureList()" />
+          </div>
+
+          <div class="sort-filter-wrap">
+            <label for="listSortSelect" style="font-size: 0.85rem; font-weight: 700;" id="lblSort">Sırala:</label>
+            <select id="listSortSelect" onchange="filterAndRenderPureList()" style="width: auto; padding: 6px 10px;">
+              <option value="manual" id="optSortManual">Manuel (Varsayılan)</option>
+              <option value="az" id="optSortAZ">A-Z (Alfabetik)</option>
+              <option value="priority" id="optSortPriority">Öncelik (Yüksek → Düşük)</option>
+              <option value="date" id="optSortDate">Tarih (Yaklaşanlar)</option>
+            </select>
+
+            <select id="listFilterSelect" onchange="filterAndRenderPureList()" style="width: auto; padding: 6px 10px;">
+              <option value="all" id="optFilterAll">Tüm Görevler</option>
+              <option value="active" id="optFilterActive">Sadece Aktif</option>
+              <option value="completed" id="optFilterCompleted">Tamamlananlar</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Salt Görev Listesi -->
+        <div id="pureTasksListContainer">
+          <!-- Dinamik Liste Elemanları -->
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- SAYFA 3: GÖREVLERİN DÜZENLENDİĞİ KISIM (Ekleme, Silme, Alt Görev) -->
+      <!-- ============================================== -->
+      <section id="sectionManage" class="newspaper-section">
+        <div class="section-headline-bar">
+          <h2 class="section-headline-title" id="headlineManage">YAZI İŞLERİ & GÖREV DÜZENLEME</h2>
+          <button class="btn btn-danger btn-small" onclick="confirmClearCompletedTasks()" id="btnClearCompletedTop">
+            <svg class="bw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            <span id="txtClearCompletedTop">Tamamlananları Sil</span>
+          </button>
+        </div>
+
+        <!-- YENİ GÖREV EKLEME FORMU -->
+        <div class="form-section">
+          <h3 style="font-family: var(--font-headline); font-size: 1.15rem; font-weight: 800; margin-bottom: 12px; text-transform: uppercase;" id="formAddHeading">
+            Yeni Görev Haberi Oluştur
+          </h3>
+          <form id="addTaskForm" onsubmit="handleAddTask(event)">
+            
+            <div class="form-group">
+              <label class="form-label" for="taskTitleInput" id="lblTaskTitle">Görev Başlığı *</label>
+              <input type="text" id="taskTitleInput" placeholder="Örn: Aylık bütçe raporunu hazırla..." required />
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label class="form-label" for="taskDateTimeInput" id="lblTaskDateTime">
+                  Tarih & Saat (Dakika, Saat, Gün, Ay, Yıl)
+                </label>
+                <input type="datetime-local" id="taskDateTimeInput" />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="taskPrioritySelect" id="lblTaskPriority">Öncelik Derecesi</label>
+                <select id="taskPrioritySelect">
+                  <option value="medium" id="optAddMedium">Orta Öncelik (Varsayılan)</option>
+                  <option value="high" id="optAddHigh">Yüksek Öncelik (Manşet)</option>
+                  <option value="low" id="optAddLow">Düşük Öncelik (Kısa Haber)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- ALT GÖREV EKLEME BÖLÜMÜ -->
+            <div class="form-group" style="border: 1px dashed var(--ink-black); padding: 12px; margin-top: 6px;">
+              <label class="form-label" id="lblSubtasksSection">Alt Görevler (Opsiyonel)</label>
+              <p style="font-size: 0.85rem; color: var(--ink-subtle); margin-bottom: 8px;" id="descSubtasks">
+                Ana görevin altına sıralanacak maddeleri ekleyebilirsiniz.
+              </p>
+              
+              <div style="display: flex; gap: 8px;">
+                <input type="text" id="subtaskDraftInput" placeholder="Alt görev maddesi yazın..." onkeydown="handleSubtaskInputKey(event)" />
+                <button type="button" class="btn" onclick="addDraftSubtask()" id="btnAddSubtaskDraft">
+                  + Alt Görev Ekle
+                </button>
+              </div>
+
+              <div id="draftSubtasksList" class="subtasks-draft-list"></div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px; flex-wrap: wrap; gap: 8px;">
+              <span style="font-size: 0.85rem; color: var(--ink-subtle);" id="txtFormHint">* Zorunlu alan</span>
+              <button type="submit" class="btn btn-filled" id="btnSubmitTask">
+                <svg class="bw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span id="txtSubmitTask">Görevi Listeye Ekle</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- HIZLI AKSİYONLAR VE MEVCUT GÖREVLERİN YÖNETİM LİSTESİ -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <h3 style="font-family: var(--font-headline); font-size: 1.15rem; font-weight: 800; text-transform: uppercase;" id="headingManageList">
+            Kayıtlı Görevler & Düzenleme
+          </h3>
+          <button class="btn btn-danger btn-small" onclick="confirmClearCompletedTasks()" id="btnClearCompletedBottom">
+            <svg class="bw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+            <span id="txtClearCompletedBottom">Tamamlananları Sil</span>
+          </button>
+        </div>
+
+        <div id="manageTasksListContainer">
+          <!-- Düzenleme ekranındaki görev listesi -->
+        </div>
+      </section>
+
+      <!-- ALT BİLGİ (FOOTER) -->
+      <footer class="newspaper-footer">
+        <p id="footerText">Günlük Görev Takibi • Tüm Hakları Saklıdır • Yerel Kayıt ile Cihazınızda Güvende</p>
+      </footer>
+    </div>
+
+    <!-- TOAST BİLDİRİMİ -->
+    <div id="appToast" class="toast" role="alert"></div>
+
+    <!-- JAVASCRIPT MOTORU (TÜM İŞLEVSELLİK TEK HTML DOSYASI İÇİNDE) -->
+    <script>
+      /* --- SİYAH-BEYAZ VEKTÖR İKON KÜTÜPHANESİ --- */
+      const svgIcons = {
+        check: '<svg class="bw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>',
+        trash: '<svg class="bw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>',
+        edit: '<svg class="bw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>',
+        plus: '<svg class="bw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+        close: '<svg class="bw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
+        info: '<svg class="bw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-right:4px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
+        clock: '<svg class="bw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+        calendar: '<svg class="bw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+        newspaper: '<svg class="bw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>',
+        star: '<svg class="bw-icon" style="width:14px;height:14px;fill:currentColor;stroke:none;" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>'
+      };
+
+      /* --- ÇOKLU DİL DESTEĞİ (TÜRKÇE, ENGLİSH, DEUTSCH) --- */
+      const translations = {
+        tr: {
+          appTitle: "Günlük Görev Takibi",
+          mastheadTitle: "GÜNLÜK BÜLTEN",
+          tagline: 'Planlama ve Görev Takip Bülteni • "Bugünün işini yarına bırakma"',
+          editionLabel: "Özel Günlük Görev Baskısı",
+          tabStats: "İstatistik",
+          tabList: "Salt Liste",
+          tabManage: "Düzenle & Ekle",
+          headlineStats: "GÜNLÜK BASKI PERFORMANS RAPORU",
+          statsLive: "Canlı Kayıt",
+          lblCompletionRate: "Tamamlanma Oranı (Daire Dilimi)",
+          lblPieHint: "Detaylar için daire dilimlerinin üzerine gelebilir veya tıklayabilirsiniz",
+          legendCompletedTitle: "Tamamlanan Görevler",
+          legendPendingTitle: "Bekleyen Görevler",
+          pieStatusBadge: "Dilimlere tıklayarak listeyi filtreleyebilirsiniz",
+          pieCompletedLabel: "Tamamlandı",
+          piePendingLabel: "Bekliyor",
+          pieTotalLabel: "Görev",
+          lblTotalTasks: "Toplam Görev",
+          lblCompletedTasks: "Tamamlanan",
+          lblPendingTasks: "Bekleyen",
+          archiveHeading: "Tarih Bazlı Görev Kayıt Arşivi",
+          archiveDesc: "Herhangi bir gün seçerek o tarihteki yapılmış ve yapılmamış görevleri inceleyin.",
+          btnArchiveToday: "Bugün",
+          btnArchiveAll: "Tümü",
+          headlineList: "MANŞET GÖREVLER BÜLTENİ",
+          searchPlaceholder: "Görevlerde ara...",
+          lblSort: "Sırala:",
+          optSortManual: "Manuel (Varsayılan)",
+          optSortAZ: "A-Z (Alfabetik)",
+          optSortPriority: "Öncelik (Yüksek → Düşük)",
+          optSortDate: "Tarih (Yaklaşanlar)",
+          optFilterAll: "Tüm Görevler",
+          optFilterActive: "Sadece Aktif",
+          optFilterCompleted: "Tamamlananlar",
+          headlineManage: "YAZI İŞLERİ & GÖREV DÜZENLEME",
+          btnClearCompleted: "Tamamlananları Sil",
+          formAddHeading: "Yeni Görev Haberi Oluştur",
+          lblTaskTitle: "Görev Başlığı *",
+          taskTitlePlaceholder: "Örn: Aylık bütçe raporunu hazırla...",
+          lblTaskDateTime: "Tarih & Saat (Dakika, Saat, Gün, Ay, Yıl)",
+          lblTaskPriority: "Öncelik Derecesi",
+          optPriorityHigh: "Yüksek Öncelik (Manşet)",
+          optPriorityMedium: "Orta Öncelik (Varsayılan)",
+          optPriorityLow: "Düşük Öncelik (Kısa Haber)",
+          lblSubtasksSection: "Alt Görevler (Opsiyonel)",
+          descSubtasks: "Ana görevin altına sıralanacak maddeleri ekleyebilirsiniz.",
+          subtaskDraftPlaceholder: "Alt görev maddesi yazın...",
+          btnAddSubtaskDraft: "+ Alt Görev Ekle",
+          txtFormHint: "* Zorunlu alan",
+          btnSubmitTask: "Görevi Listeye Ekle",
+          headingManageList: "Kayıtlı Görevler & Düzenleme",
+          btnEdit: "Düzenle",
+          btnDelete: "Sil",
+          emptyTasksList: "Henüz yayınlanmış görev bulunmuyor. Yeni bir görev ekleyin!",
+          emptyArchiveList: "Bu tarihe ait kaydedilmiş bir görev bulunamadı.",
+          confirmDeleteTask: "Bu görevi silmek istediğinize emin misiniz?",
+          confirmClearCompleted: "Tamamlanmış tüm görevleri kalıcı olarak silmek istiyor musunuz?",
+          confirmClearAll: "Tüm görev kayıtlarını ve ayarları sıfırlamak istiyor musunuz?",
+          toastTaskAdded: "Yeni görev listeye eklendi.",
+          toastTaskUpdated: "Görev başarıyla güncellendi.",
+          toastTaskDeleted: "Görev silindi.",
+          toastCompletedCleared: "Tamamlanan görevler temizlendi.",
+          toastSubtaskAdded: "Alt görev eklendi.",
+          toastAllCleared: "Tüm veriler sıfırlandı.",
+          confirmModalTitle: "Onay Gerekiyor",
+          editModalHeading: "Görevi Düzenle",
+          btnCancel: "İptal",
+          btnSave: "Kaydet",
+          settingsModalTitle: "Uygulama Ayarları",
+          langSelectLabel: "Uygulama Dili / Language",
+          reopenGuideLabel: "Başlangıç Rehberi",
+          reopenGuideDesc: "İlk açılış sunumunu ve uygulama tanıtımını tekrar izleyebilirsiniz.",
+          reopenGuideBtn: "Sunumu Tekrar Başlat",
+          storageInfoLabel: "Veri Yönetimi",
+          clearAllDataBtn: "Tüm Verileri Temizle",
+          footerText: "Günlük Görev Takibi • Tüm Hakları Saklıdır • Yerel Kayıt ile Cihazınızda Güvende",
+          priorityHighTag: "YÜKSEK",
+          priorityMediumTag: "ORTA",
+          priorityLowTag: "DÜŞÜK",
+          subtaskProgress: "alt görev",
+          onboarding: {
+            stampText: "GÜNLÜK ÖZEL İLK BASKI",
+            step1: {
+              title: "Hoş Geldiniz!",
+              body: "Görev Takip uygulamasını tercih ettiğiniz için teşekkür ederiz. Artık günlük görevlerinizi klasik tipografi zarafetinde takip edebilirsiniz."
+            },
+            step2: {
+              title: "Klasik Estetik & Özellikler",
+              body: "Uygulama; klasik font, saf beyaz zemin ve siyah mürekkep kontrastıyla tasarlandı. Dakika, saat, gün, ay ve yıl hassasiyetinde görev ekleyebilir ve ana görevinizin altına girintili alt görevler yerleştirebilirsiniz."
+            },
+            step3: {
+              title: "Daire Dilimi Grafiği & Sayfalar",
+              body: "İnteraktif Daire Dilimi tamamlanma grafiği, A-Z veya öncelik sıralamalı Salt Liste ve hızlı Görev Yönetimi sayfaları arasında tek tıkla geçiş yapabilirsiniz. Ayrıca herhangi bir günün geçmişini kayıt sisteminden inceleyebilirsiniz."
+            },
+            step4: {
+              title: "İyi Günler Dileriz!",
+              body: "Verimli ve harika bir gün dileriz. Gelecek güncellemeler ve yeni özellikler için takipte kalın!"
+            },
+            btnPrev: "← Geri",
+            btnNext: "İleri →",
+            btnFinish: "Keşfetmeye Başla"
+          }
+        },
+        en: {
+          appTitle: "Daily Task Tracker",
+          mastheadTitle: "DAILY BULLETIN",
+          tagline: 'Planning & Task Bulletin • "Never put off till tomorrow what you can do today"',
+          editionLabel: "Special Daily Task Edition",
+          tabStats: "Statistics",
+          tabList: "Pure List",
+          tabManage: "Edit & Add",
+          headlineStats: "DAILY PRINT PERFORMANCE REPORT",
+          statsLive: "Live Record",
+          lblCompletionRate: "Completion Rate (Pie Chart)",
+          lblPieHint: "Hover over or click circular slices to inspect or filter",
+          legendCompletedTitle: "Completed Tasks",
+          legendPendingTitle: "Pending Tasks",
+          pieStatusBadge: "Click any slice to filter tasks",
+          pieCompletedLabel: "Completed",
+          piePendingLabel: "Pending",
+          pieTotalLabel: "Tasks",
+          lblTotalTasks: "Total Tasks",
+          lblCompletedTasks: "Completed",
+          lblPendingTasks: "Pending",
+          archiveHeading: "Date-Based Task Archive",
+          archiveDesc: "Pick any date to review completed and pending tasks recorded on that day.",
+          btnArchiveToday: "Today",
+          btnArchiveAll: "All",
+          headlineList: "HEADLINE TASKS BULLETIN",
+          searchPlaceholder: "Search tasks...",
+          lblSort: "Sort by:",
+          optSortManual: "Manual (Default)",
+          optSortAZ: "A-Z (Alphabetical)",
+          optSortPriority: "Priority (High → Low)",
+          optSortDate: "Date (Upcoming)",
+          optFilterAll: "All Tasks",
+          optFilterActive: "Active Only",
+          optFilterCompleted: "Completed",
+          headlineManage: "EDITORIAL & TASK MANAGEMENT",
+          btnClearCompleted: "Clear Completed",
+          formAddHeading: "Create New Task Story",
+          lblTaskTitle: "Task Headline *",
+          taskTitlePlaceholder: "E.g. Finalize quarterly financial report...",
+          lblTaskDateTime: "Date & Time (Minute, Hour, Day, Month, Year)",
+          lblTaskPriority: "Priority Level",
+          optPriorityHigh: "High Priority (Headline)",
+          optPriorityMedium: "Medium Priority (Standard)",
+          optPriorityLow: "Low Priority (Brief)",
+          lblSubtasksSection: "Subtasks (Optional)",
+          descSubtasks: "Add bullet items nested indented beneath the main task.",
+          subtaskDraftPlaceholder: "Type subtask item...",
+          btnAddSubtaskDraft: "+ Add Subtask",
+          txtFormHint: "* Required field",
+          btnSubmitTask: "Publish Task to List",
+          headingManageList: "Recorded Tasks & Editing",
+          btnEdit: "Edit",
+          btnDelete: "Delete",
+          emptyTasksList: "No stories published yet. Add your first task!",
+          emptyArchiveList: "No recorded tasks found for this specific date.",
+          confirmDeleteTask: "Are you sure you want to delete this task?",
+          confirmClearCompleted: "Do you want to permanently delete all completed tasks?",
+          confirmClearAll: "Do you want to reset all tasks and storage?",
+          toastTaskAdded: "New task published to list.",
+          toastTaskUpdated: "Task updated successfully.",
+          toastTaskDeleted: "Task deleted.",
+          toastCompletedCleared: "Completed tasks removed.",
+          toastSubtaskAdded: "Subtask added.",
+          toastAllCleared: "All data has been reset.",
+          confirmModalTitle: "Confirmation Required",
+          editModalHeading: "Edit Task",
+          btnCancel: "Cancel",
+          btnSave: "Save",
+          settingsModalTitle: "Application Settings",
+          langSelectLabel: "Application Language",
+          reopenGuideLabel: "Welcome Presentation",
+          reopenGuideDesc: "You can replay the introduction presentation anytime.",
+          reopenGuideBtn: "Replay Presentation",
+          storageInfoLabel: "Data Management",
+          clearAllDataBtn: "Clear All Data",
+          footerText: "Daily Task Tracker • All Rights Reserved • Saved Locally & Securely",
+          priorityHighTag: "HIGH",
+          priorityMediumTag: "MED",
+          priorityLowTag: "LOW",
+          subtaskProgress: "subtasks",
+          onboarding: {
+            stampText: "DAILY BULLETIN FIRST SPECIAL EDITION",
+            step1: {
+              title: "Welcome Aboard!",
+              body: "Thank you for opening the Daily Task Tracker. You can now track your daily routines and essential goals with authentic vintage craft."
+            },
+            step2: {
+              title: "Typography & Features",
+              body: "Featuring authentic serif typography, pure white parchment, and jet-black ink. Schedule tasks down to the exact minute, hour, day, month, and year, and nest bulleted subtasks right beneath them."
+            },
+            step3: {
+              title: "Interactive Pie Chart & Sections",
+              body: "Switch effortlessly between the interactive Completion Pie Chart report, the clean Pure Reading list (with A-Z & priority ordering), and the Task Editorial section. Review any historical date in the archive log."
+            },
+            step4: {
+              title: "Have a Wonderful Day!",
+              body: "Wishing you a productive, noteworthy, and organized day ahead. Stay tuned for upcoming editions and features!"
+            },
+            btnPrev: "← Back",
+            btnNext: "Next →",
+            btnFinish: "Start Exploring"
+          }
+        },
+        de: {
+          appTitle: "Tagesaufgaben-Planer",
+          mastheadTitle: "TAGESBULLETIN",
+          tagline: 'Planungs- & Aufgabenblatt • "Was du heute kannst besorgen, das verschiebe nicht auf morgen"',
+          editionLabel: "Sonderausgabe für Tagesaufgaben",
+          tabStats: "Statistik",
+          tabList: "Reine Liste",
+          tabManage: "Bearbeiten & Neu",
+          headlineStats: "LEISTUNGSBERICHT DER HEUTIGEN AUSGABE",
+          statsLive: "Live-Aufzeichnung",
+          lblCompletionRate: "Erledigungsquote (Kreisdiagramm)",
+          lblPieHint: "Fahren Sie über die Kreisabschnitte oder klicken Sie zum Filtern",
+          legendCompletedTitle: "Erledigte Aufgaben",
+          legendPendingTitle: "Ausstehende Aufgaben",
+          pieStatusBadge: "Klicken Sie auf ein Segment, um die Liste zu filtern",
+          pieCompletedLabel: "Erledigt",
+          piePendingLabel: "Ausstehend",
+          pieTotalLabel: "Aufgaben",
+          lblTotalTasks: "Aufgaben Gesamt",
+          lblCompletedTasks: "Erledigt",
+          lblPendingTasks: "Ausstehend",
+          archiveHeading: "Datumsbasiertes Aufgabenarchiv",
+          archiveDesc: "Wählen Sie einen beliebigen Tag, um erledigte und offene Aufgaben einzusehen.",
+          btnArchiveToday: "Heute",
+          btnArchiveAll: "Alle",
+          headlineList: "TITELSEITEN-AUFGABEN",
+          searchPlaceholder: "Aufgaben durchsuchen...",
+          lblSort: "Sortieren nach:",
+          optSortManual: "Manuell (Standard)",
+          optSortAZ: "A-Z (Alphabetisch)",
+          optSortPriority: "Priorität (Hoch → Niedrig)",
+          optSortDate: "Datum (Anstehend)",
+          optFilterAll: "Alle Aufgaben",
+          optFilterActive: "Nur Aktive",
+          optFilterCompleted: "Erledigte",
+          headlineManage: "REDAKTION & AUFGABENVERWALTUNG",
+          btnClearCompleted: "Erledigte löschen",
+          formAddHeading: "Neuen Aufgabenbericht erstellen",
+          lblTaskTitle: "Aufgabentitel *",
+          taskTitlePlaceholder: "Z.B. Monatsbericht fertigstellen...",
+          lblTaskDateTime: "Datum & Uhrzeit (Minute, Stunde, Tag, Monat, Jahr)",
+          lblTaskPriority: "Prioritätsstufe",
+          optPriorityHigh: "Hohe Priorität (Schlagzeile)",
+          optPriorityMedium: "Mittlere Priorität (Standard)",
+          optPriorityLow: "Niedrige Priorität (Kurzmeldung)",
+          lblSubtasksSection: "Unteraufgaben (Optional)",
+          descSubtasks: "Fügen Sie Punkte hinzu, die eingerückt unter der Hauptaufgabe stehen.",
+          subtaskDraftPlaceholder: "Unteraufgabe eingeben...",
+          btnAddSubtaskDraft: "+ Unteraufgabe hinzufügen",
+          txtFormHint: "* Pflichtfeld",
+          btnSubmitTask: "Aufgabe zur Liste hinzufügen",
+          headingManageList: "Gespeicherte Aufgaben & Bearbeitung",
+          btnEdit: "Bearbeiten",
+          btnDelete: "Löschen",
+          emptyTasksList: "Bisher sind keine Aufgaben erschienen. Fügen Sie eine hinzu!",
+          emptyArchiveList: "Für dieses Datum wurden keine Aufgaben gefunden.",
+          confirmDeleteTask: "Möchten Sie diese Aufgabe wirklich löschen?",
+          confirmClearCompleted: "Möchten Sie alle erledigten Aufgaben dauerhaft löschen?",
+          confirmClearAll: "Möchten Sie alle Daten und Einstellungen zurücksetzen?",
+          toastTaskAdded: "Neue Aufgabe zur Liste hinzugefügt.",
+          toastTaskUpdated: "Aufgabe erfolgreich aktualisiert.",
+          toastTaskDeleted: "Aufgabe gelöscht.",
+          toastCompletedCleared: "Erledigte Aufgaben wurden entfernt.",
+          toastSubtaskAdded: "Unteraufgabe hinzugefügt.",
+          toastAllCleared: "Alle Daten wurden zurückgesetzt.",
+          confirmModalTitle: "Bestätigung erforderlich",
+          editModalHeading: "Aufgabe bearbeiten",
+          btnCancel: "Abbrechen",
+          btnSave: "Speichern",
+          settingsModalTitle: "Programmeinstellungen",
+          langSelectLabel: "Programmsprache / Language",
+          reopenGuideLabel: "Einführungspräsentation",
+          reopenGuideDesc: "Sie können die Präsentation jederzeit erneut starten.",
+          reopenGuideBtn: "Präsentation erneut abspielen",
+          storageInfoLabel: "Datenverwaltung",
+          clearAllDataBtn: "Alle Daten löschen",
+          footerText: "Tagesaufgaben-Planer • Alle Rechte vorbehalten • Lokal gesichert",
+          priorityHighTag: "HOCH",
+          priorityMediumTag: "MITTEL",
+          priorityLowTag: "NIEDRIG",
+          subtaskProgress: "Unteraufgaben",
+          onboarding: {
+            stampText: "TAGESBULLETIN ERSTE SONDERAUSGABE",
+            step1: {
+              title: "Herzlich Willkommen!",
+              body: "Vielen Dank, dass Sie den Tagesaufgaben-Planer nutzen. Verfolgen Sie Ihre Aufgaben ab sofort in klassischer Typografie."
+            },
+            step2: {
+              title: "Klassische Schrift & Funktionen",
+              body: "Klassische Serifenschrift, reinweißer Hintergrund und tiefschwarze Schrift. Planen Sie auf Minute, Stunde, Tag, Monat und Jahr genau und fügen Sie eingerückte Unteraufgaben hinzu."
+            },
+            step3: {
+              title: "Kreisdiagramm & 3 Bereiche",
+              body: "Wechseln Sie zwischen dem interaktiven Kreisdiagramm, der reinen Leseliste (mit A-Z & Prioritätssortierung) und der Redaktionsverwaltung. Historische Tage können im Archiv eingesehen werden."
+            },
+            step4: {
+              title: "Einen schönen Tag!",
+              body: "Wir wünschen Ihnen einen produktiven und erfolgreichen Tag. Bleiben Sie für kommende Ausgaben auf dem Laufenden!"
+            },
+            btnPrev: "← Zurück",
+            btnNext: "Weiter →",
+            btnFinish: "Jetzt Entdecken"
+          }
+        },
+        it: {
+          appTitle: "Gestione Attività Giornaliere",
+          mastheadTitle: "BOLLETTINO GIORNALIERO",
+          tagline: 'Bollettino di Pianificazione e Attività • "Non rimandare a domani ciò che puoi fare oggi"',
+          editionLabel: "Edizione Speciale Giornaliera",
+          tabStats: "Statistica",
+          tabList: "Lista Semplice",
+          tabManage: "Modifica & Aggiungi",
+          headlineStats: "RAPPORTO PRESTAZIONI DELL'EDIZIONE ODIERNA",
+          statsLive: "Registro in Diretta",
+          lblCompletionRate: "Tasso di Completamento (Grafico a Torta)",
+          lblPieHint: "Passa il mouse o clicca sulle fette per i dettagli",
+          legendCompletedTitle: "Attività Completate",
+          legendPendingTitle: "Attività in Sospeso",
+          pieStatusBadge: "Clicca una fetta per filtrare la lista",
+          pieCompletedLabel: "Completate",
+          piePendingLabel: "In Sospeso",
+          pieTotalLabel: "Attività",
+          lblTotalTasks: "Attività Totali",
+          lblCompletedTasks: "Completate",
+          lblPendingTasks: "In Sospeso",
+          archiveHeading: "Archivio Attività per Data",
+          archiveDesc: "Seleziona una data per rivedere le attività completate e in sospeso di quel giorno.",
+          btnArchiveToday: "Oggi",
+          btnArchiveAll: "Tutte",
+          headlineList: "BOLLETTINO DELLE ATTIVITÀ IN PRIMA PAGINA",
+          searchPlaceholder: "Cerca attività...",
+          lblSort: "Ordina per:",
+          optSortManual: "Manuale (Predefinito)",
+          optSortAZ: "A-Z (Alfabetico)",
+          optSortPriority: "Priorità (Alta → Bassa)",
+          optSortDate: "Data (Prossime)",
+          optFilterAll: "Tutte le Attività",
+          optFilterActive: "Solo Attive",
+          optFilterCompleted: "Completate",
+          headlineManage: "REDAZIONE & GESTIONE ATTIVITÀ",
+          btnClearCompleted: "Elimina Completate",
+          formAddHeading: "Crea Nuova Attività",
+          lblTaskTitle: "Titolo Attività *",
+          taskTitlePlaceholder: "Es. Completare il report finanziario trimestrale...",
+          lblTaskDateTime: "Data & Ora (Minuto, Ora, Giorno, Mese, Anno)",
+          lblTaskPriority: "Livello di Priorità",
+          optPriorityHigh: "Priorità Alta (Titolo Principale)",
+          optPriorityMedium: "Priorità Media (Standard)",
+          optPriorityLow: "Priorità Bassa (Breve)",
+          lblSubtasksSection: "Sottoattività (Opzionale)",
+          descSubtasks: "Aggiungi voci puntate elencate sotto l'attività principale.",
+          subtaskDraftPlaceholder: "Scrivi una sottoattività...",
+          btnAddSubtaskDraft: "+ Aggiungi Sottoattività",
+          txtFormHint: "* Campo obbligatorio",
+          btnSubmitTask: "Pubblica Attività nella Lista",
+          headingManageList: "Attività Registrate & Modifica",
+          btnEdit: "Modifica",
+          btnDelete: "Elimina",
+          emptyTasksList: "Nessuna attività pubblicata. Aggiungine una!",
+          emptyArchiveList: "Nessuna attività registrata trovata per questa data.",
+          confirmDeleteTask: "Sei sicuro di voler eliminare questa attività?",
+          confirmClearCompleted: "Vuoi eliminare definitivamente tutte le attività completate?",
+          confirmClearAll: "Vuoi reimpostare tutte le attività e le impostazioni?",
+          toastTaskAdded: "Nuova attività aggiunta alla lista.",
+          toastTaskUpdated: "Attività aggiornata con successo.",
+          toastTaskDeleted: "Attività eliminata.",
+          toastCompletedCleared: "Attività completate rimosse.",
+          toastSubtaskAdded: "Sottoattività aggiunta.",
+          toastAllCleared: "Tutti i dati sono stati reimpostati.",
+          confirmModalTitle: "Conferma Richiesta",
+          editModalHeading: "Modifica Attività",
+          btnCancel: "Annulla",
+          btnSave: "Salva",
+          settingsModalTitle: "Impostazioni Applicazione",
+          langSelectLabel: "Lingua dell'Applicazione",
+          reopenGuideLabel: "Presentazione di Benvenuto",
+          reopenGuideDesc: "Puoi rivedere la presentazione introduttiva in qualsiasi momento.",
+          reopenGuideBtn: "Rivedi Presentazione",
+          storageInfoLabel: "Gestione Dati",
+          clearAllDataBtn: "Cancella Tutti i Dati",
+          footerText: "Gestione Attività Giornaliere • Tutti i Diritti Riservati • Salvato Localmente e in Sicurezza",
+          priorityHighTag: "ALTA",
+          priorityMediumTag: "MEDIA",
+          priorityLowTag: "BASSA",
+          subtaskProgress: "sottoattività",
+          onboarding: {
+            stampText: "PRIMA EDIZIONE SPECIALE DEL BOLLETTINO",
+            step1: {
+              title: "Benvenuto a Bordo!",
+              body: "Grazie per aver aperto Gestione Attività Giornaliere. Ora puoi tenere traccia delle tue attività quotidiane con un'autentica eleganza classica."
+            },
+            step2: {
+              title: "Tipografia & Funzionalità",
+              body: "Caratteristica tipografia serif autentica, sfondo bianco puro e inchiostro nero intenso. Pianifica attività con precisione al minuto, ora, giorno, mese e anno, e aggiungi sottoattività puntate sotto quella principale."
+            },
+            step3: {
+              title: "Grafico a Torta Interattivo & Sezioni",
+              body: "Passa facilmente tra il grafico a torta interattivo, la lista di lettura pulita (con ordinamento A-Z e per priorità) e la sezione di redazione. Rivedi qualsiasi data storica nell'archivio."
+            },
+            step4: {
+              title: "Ti Auguriamo una Splendida Giornata!",
+              body: "Ti auguriamo una giornata produttiva e ben organizzata. Resta sintonizzato per prossime edizioni e nuove funzionalità!"
+            },
+            btnPrev: "← Indietro",
+            btnNext: "Avanti →",
+            btnFinish: "Inizia ad Esplorare"
+          }
+        },
+        ru: {
+          appTitle: "Ежедневный Планировщик Задач",
+          mastheadTitle: "ЕЖЕДНЕВНЫЙ БЮЛЛЕТЕНЬ",
+          tagline: 'Бюллетень Планирования и Задач • «Не откладывай на завтра то, что можешь сделать сегодня»',
+          editionLabel: "Специальный Ежедневный Выпуск",
+          tabStats: "Статистика",
+          tabList: "Простой Список",
+          tabManage: "Редактировать",
+          headlineStats: "ОТЧЁТ О ВЫПОЛНЕНИИ ЗА ДЕНЬ",
+          statsLive: "Живая Запись",
+          lblCompletionRate: "Процент Выполнения (Круговая Диаграмма)",
+          lblPieHint: "Наведите курсор или нажмите на сектор для подробностей",
+          legendCompletedTitle: "Выполненные Задачи",
+          legendPendingTitle: "Ожидающие Задачи",
+          pieStatusBadge: "Нажмите на сектор, чтобы отфильтровать список",
+          pieCompletedLabel: "Выполнено",
+          piePendingLabel: "Ожидает",
+          pieTotalLabel: "Задачи",
+          lblTotalTasks: "Всего Задач",
+          lblCompletedTasks: "Выполнено",
+          lblPendingTasks: "Ожидает",
+          archiveHeading: "Архив Задач по Датам",
+          archiveDesc: "Выберите дату, чтобы просмотреть выполненные и невыполненные задачи за этот день.",
+          btnArchiveToday: "Сегодня",
+          btnArchiveAll: "Все",
+          headlineList: "БЮЛЛЕТЕНЬ ГЛАВНЫХ ЗАДАЧ",
+          searchPlaceholder: "Поиск задач...",
+          lblSort: "Сортировать по:",
+          optSortManual: "Вручную (По умолчанию)",
+          optSortAZ: "А-Я (По алфавиту)",
+          optSortPriority: "Приоритет (Выс. → Низ.)",
+          optSortDate: "Дата (Ближайшие)",
+          optFilterAll: "Все Задачи",
+          optFilterActive: "Только Активные",
+          optFilterCompleted: "Выполненные",
+          headlineManage: "РЕДАКЦИЯ И УПРАВЛЕНИЕ ЗАДАЧАМИ",
+          btnClearCompleted: "Очистить Выполненные",
+          formAddHeading: "Создать Новую Задачу",
+          lblTaskTitle: "Название Задачи *",
+          taskTitlePlaceholder: "Напр.: Завершить квартальный отчёт...",
+          lblTaskDateTime: "Дата и Время (Минута, Час, День, Месяц, Год)",
+          lblTaskPriority: "Уровень Приоритета",
+          optPriorityHigh: "Высокий Приоритет (Главная Новость)",
+          optPriorityMedium: "Средний Приоритет (Стандарт)",
+          optPriorityLow: "Низкий Приоритет (Краткая Заметка)",
+          lblSubtasksSection: "Подзадачи (Необязательно)",
+          descSubtasks: "Добавьте пункты, вложенные под основную задачу.",
+          subtaskDraftPlaceholder: "Введите подзадачу...",
+          btnAddSubtaskDraft: "+ Добавить Подзадачу",
+          txtFormHint: "* Обязательное поле",
+          btnSubmitTask: "Опубликовать Задачу",
+          headingManageList: "Сохранённые Задачи и Редактирование",
+          btnEdit: "Изменить",
+          btnDelete: "Удалить",
+          emptyTasksList: "Пока нет опубликованных задач. Добавьте первую!",
+          emptyArchiveList: "На эту дату задачи не найдены.",
+          confirmDeleteTask: "Вы уверены, что хотите удалить эту задачу?",
+          confirmClearCompleted: "Удалить все выполненные задачи навсегда?",
+          confirmClearAll: "Сбросить все задачи и настройки?",
+          toastTaskAdded: "Новая задача добавлена в список.",
+          toastTaskUpdated: "Задача успешно обновлена.",
+          toastTaskDeleted: "Задача удалена.",
+          toastCompletedCleared: "Выполненные задачи удалены.",
+          toastSubtaskAdded: "Подзадача добавлена.",
+          toastAllCleared: "Все данные сброшены.",
+          confirmModalTitle: "Требуется Подтверждение",
+          editModalHeading: "Редактировать Задачу",
+          btnCancel: "Отмена",
+          btnSave: "Сохранить",
+          settingsModalTitle: "Настройки Приложения",
+          langSelectLabel: "Язык Приложения",
+          reopenGuideLabel: "Вводная Презентация",
+          reopenGuideDesc: "Вы можете снова просмотреть вводную презентацию в любое время.",
+          reopenGuideBtn: "Повторить Презентацию",
+          storageInfoLabel: "Управление Данными",
+          clearAllDataBtn: "Очистить Все Данные",
+          footerText: "Ежедневный Планировщик Задач • Все Права Защищены • Хранится Локально и Безопасно",
+          priorityHighTag: "ВЫСОКИЙ",
+          priorityMediumTag: "СРЕДНИЙ",
+          priorityLowTag: "НИЗКИЙ",
+          subtaskProgress: "подзадачи",
+          onboarding: {
+            stampText: "ПЕРВЫЙ СПЕЦИАЛЬНЫЙ ВЫПУСК БЮЛЛЕТЕНЯ",
+            step1: {
+              title: "Добро Пожаловать!",
+              body: "Спасибо, что открыли Ежедневный Планировщик Задач. Теперь вы можете отслеживать свои повседневные задачи с настоящим классическим изяществом."
+            },
+            step2: {
+              title: "Типографика и Возможности",
+              body: "Классическая типографика с засечками, чисто белый фон и насыщенно-чёрные чернила. Планируйте задачи с точностью до минуты, часа, дня, месяца и года и добавляйте вложенные подзадачи под основной."
+            },
+            step3: {
+              title: "Интерактивная Круговая Диаграмма и Разделы",
+              body: "Легко переключайтесь между интерактивным отчётом круговой диаграммы, чистым списком для чтения (с сортировкой А-Я и по приоритету) и разделом управления задачами. Просматривайте историю любой даты в архиве."
+            },
+            step4: {
+              title: "Желаем Вам Отличного Дня!",
+              body: "Желаем продуктивного и организованного дня! Следите за новыми выпусками и функциями!"
+            },
+            btnPrev: "← Назад",
+            btnNext: "Далее →",
+            btnFinish: "Начать Изучение"
+          }
+        },
+        fr: {
+          appTitle: "Gestionnaire de Tâches Quotidiennes",
+          mastheadTitle: "BULLETIN QUOTIDIEN",
+          tagline: 'Bulletin de Planification et de Tâches • « Ne remets jamais au lendemain ce que tu peux faire le jour même »',
+          editionLabel: "Édition Spéciale Quotidienne",
+          tabStats: "Statistiques",
+          tabList: "Liste Simple",
+          tabManage: "Modifier & Ajouter",
+          headlineStats: "RAPPORT DE PERFORMANCE DE L'ÉDITION DU JOUR",
+          statsLive: "Registre en Direct",
+          lblCompletionRate: "Taux d'Achèvement (Diagramme Circulaire)",
+          lblPieHint: "Survolez ou cliquez sur une part pour voir les détails",
+          legendCompletedTitle: "Tâches Terminées",
+          legendPendingTitle: "Tâches en Attente",
+          pieStatusBadge: "Cliquez sur une part pour filtrer la liste",
+          pieCompletedLabel: "Terminé",
+          piePendingLabel: "En Attente",
+          pieTotalLabel: "Tâches",
+          lblTotalTasks: "Total des Tâches",
+          lblCompletedTasks: "Terminées",
+          lblPendingTasks: "En Attente",
+          archiveHeading: "Archive des Tâches par Date",
+          archiveDesc: "Choisissez une date pour consulter les tâches terminées et en attente de ce jour.",
+          btnArchiveToday: "Aujourd'hui",
+          btnArchiveAll: "Toutes",
+          headlineList: "BULLETIN DES TÂCHES À LA UNE",
+          searchPlaceholder: "Rechercher des tâches...",
+          lblSort: "Trier par :",
+          optSortManual: "Manuel (Par défaut)",
+          optSortAZ: "A-Z (Alphabétique)",
+          optSortPriority: "Priorité (Haute → Basse)",
+          optSortDate: "Date (À venir)",
+          optFilterAll: "Toutes les Tâches",
+          optFilterActive: "Actives Uniquement",
+          optFilterCompleted: "Terminées",
+          headlineManage: "RÉDACTION & GESTION DES TÂCHES",
+          btnClearCompleted: "Effacer les Terminées",
+          formAddHeading: "Créer une Nouvelle Tâche",
+          lblTaskTitle: "Titre de la Tâche *",
+          taskTitlePlaceholder: "Ex : Finaliser le rapport financier trimestriel...",
+          lblTaskDateTime: "Date & Heure (Minute, Heure, Jour, Mois, Année)",
+          lblTaskPriority: "Niveau de Priorité",
+          optPriorityHigh: "Priorité Haute (Une)",
+          optPriorityMedium: "Priorité Moyenne (Standard)",
+          optPriorityLow: "Priorité Basse (Brève)",
+          lblSubtasksSection: "Sous-tâches (Facultatif)",
+          descSubtasks: "Ajoutez des éléments imbriqués sous la tâche principale.",
+          subtaskDraftPlaceholder: "Saisir une sous-tâche...",
+          btnAddSubtaskDraft: "+ Ajouter une Sous-tâche",
+          txtFormHint: "* Champ requis",
+          btnSubmitTask: "Publier la Tâche",
+          headingManageList: "Tâches Enregistrées & Modification",
+          btnEdit: "Modifier",
+          btnDelete: "Supprimer",
+          emptyTasksList: "Aucune tâche publiée pour l'instant. Ajoutez-en une !",
+          emptyArchiveList: "Aucune tâche enregistrée trouvée pour cette date.",
+          confirmDeleteTask: "Êtes-vous sûr de vouloir supprimer cette tâche ?",
+          confirmClearCompleted: "Voulez-vous supprimer définitivement toutes les tâches terminées ?",
+          confirmClearAll: "Voulez-vous réinitialiser toutes les tâches et paramètres ?",
+          toastTaskAdded: "Nouvelle tâche ajoutée à la liste.",
+          toastTaskUpdated: "Tâche mise à jour avec succès.",
+          toastTaskDeleted: "Tâche supprimée.",
+          toastCompletedCleared: "Tâches terminées supprimées.",
+          toastSubtaskAdded: "Sous-tâche ajoutée.",
+          toastAllCleared: "Toutes les données ont été réinitialisées.",
+          confirmModalTitle: "Confirmation Requise",
+          editModalHeading: "Modifier la Tâche",
+          btnCancel: "Annuler",
+          btnSave: "Enregistrer",
+          settingsModalTitle: "Paramètres de l'Application",
+          langSelectLabel: "Langue de l'Application",
+          reopenGuideLabel: "Présentation de Bienvenue",
+          reopenGuideDesc: "Vous pouvez revoir la présentation d'introduction à tout moment.",
+          reopenGuideBtn: "Revoir la Présentation",
+          storageInfoLabel: "Gestion des Données",
+          clearAllDataBtn: "Effacer Toutes les Données",
+          footerText: "Gestionnaire de Tâches Quotidiennes • Tous Droits Réservés • Sauvegardé Localement et en Sécurité",
+          priorityHighTag: "HAUTE",
+          priorityMediumTag: "MOY.",
+          priorityLowTag: "BASSE",
+          subtaskProgress: "sous-tâches",
+          onboarding: {
+            stampText: "PREMIÈRE ÉDITION SPÉCIALE DU BULLETIN",
+            step1: {
+              title: "Bienvenue à Bord !",
+              body: "Merci d'avoir ouvert le Gestionnaire de Tâches Quotidiennes. Vous pouvez désormais suivre vos tâches quotidiennes avec une élégance classique authentique."
+            },
+            step2: {
+              title: "Typographie & Fonctionnalités",
+              body: "Typographie serif authentique, fond blanc pur et encre noire intense. Planifiez vos tâches à la minute, à l'heure, au jour, au mois et à l'année près, et ajoutez des sous-tâches imbriquées sous la tâche principale."
+            },
+            step3: {
+              title: "Diagramme Circulaire Interactif & Sections",
+              body: "Passez facilement du rapport de diagramme circulaire interactif à la liste de lecture épurée (avec tri A-Z et par priorité) et à la section de rédaction des tâches. Consultez l'historique de n'importe quelle date dans les archives."
+            },
+            step4: {
+              title: "Nous Vous Souhaitons une Excellente Journée !",
+              body: "Nous vous souhaitons une journée productive et bien organisée. Restez à l'écoute pour les prochaines éditions et fonctionnalités !"
+            },
+            btnPrev: "← Retour",
+            btnNext: "Suivant →",
+            btnFinish: "Commencer à Explorer"
+          }
+        }
+      };
+
+      /* --- UYGULAMA DURUMU (STATE) & LOCALSTORAGE DEPOLAMA --- */
+      const STORAGE_KEY_TASKS = 'newspaper_todos_v3';
+      const STORAGE_KEY_LANG = 'newspaper_todos_lang';
+      const STORAGE_KEY_ONBOARDING = 'newspaper_has_seen_onboarding_v2';
+
+      let currentLang = localStorage.getItem(STORAGE_KEY_LANG) || 'tr';
+      let tasks = [];
+      let currentDraftSubtasks = [];
+      let currentEditSubtasks = [];
+      let activeSection = 'stats'; // 'stats' | 'list' | 'manage'
+      let onboardingStep = 0;
+
+      // Verileri Yükle (Uygulama 0 "sıfır" veri içerecek şekilde bomboş başlar)
+      function loadData() {
+        // Önceki sürümlerden kalan hazır/örnek görev kayıtlarını temizle
+        localStorage.removeItem('newspaper_todos_v2');
+        localStorage.removeItem('newspaper_todos');
+
+        const saved = localStorage.getItem(STORAGE_KEY_TASKS);
+        if (saved) {
+          try {
+            const parsed = JSON.parse(saved);
+            if (Array.isArray(parsed)) {
+              // Eski örnek görev id'leri varsa filtrele
+              tasks = parsed.filter(t => t && !['task_1', 'task_2', 'task_3'].includes(t.id));
+            } else {
+              tasks = [];
+            }
+          } catch (e) {
+            tasks = [];
+          }
+        } else {
+          // Sıfır veri ile bomboş başlat
+          tasks = [];
+          saveData();
+        }
+      }
+
+      // Verileri Kaydet
+      function saveData() {
+        localStorage.setItem(STORAGE_KEY_TASKS, JSON.stringify(tasks));
+      }
+
+      /* --- TARİH & SAAT FORMATLAMA YARDIMCISI --- */
+      function formatDateTimeDisplay(dateTimeStr) {
+        if (!dateTimeStr) return '';
+        try {
+          const d = new Date(dateTimeStr);
+          if (isNaN(d.getTime())) return dateTimeStr;
+          const pad = n => String(n).padStart(2, '0');
+          const day = pad(d.getDate());
+          const month = pad(d.getMonth() + 1);
+          const year = d.getFullYear();
+          const hours = pad(d.getHours());
+          const mins = pad(d.getMinutes());
+          return `${day}.${month}.${year} - ${hours}:${mins}`;
+        } catch (e) {
+          return dateTimeStr;
+        }
+      }
+
+      function getTodayDateString() {
+        const d = new Date();
+        const pad = n => String(n).padStart(2, '0');
+        return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+      }
+
+      function updateHeaderDate() {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const localeMap = { tr: 'tr-TR', en: 'en-US', de: 'de-DE', it: 'it-IT', ru: 'ru-RU', fr: 'fr-FR' };
+        const formatted = new Date().toLocaleDateString(localeMap[currentLang] || 'tr-TR', options);
+        document.getElementById('currentDateDisplay').textContent = formatted;
+      }
+
+      /* --- DİL GÜNCELLEME VE ARAYÜZ YENİLEME --- */
+      function applyTranslations() {
+        const t = translations[currentLang] || translations.tr;
+        
+        document.title = t.appTitle;
+        const mastheadTitle = document.getElementById('mastheadTitle');
+        if (mastheadTitle) mastheadTitle.textContent = t.mastheadTitle;
+        const mastheadTagline = document.getElementById('mastheadTagline');
+        if (mastheadTagline) mastheadTagline.textContent = t.tagline;
+        const editionLabel = document.getElementById('editionLabel');
+        if (editionLabel) editionLabel.textContent = t.editionLabel;
+        
+        const tabTitleStats = document.getElementById('tabTitleStats');
+        if (tabTitleStats) tabTitleStats.textContent = t.tabStats;
+        const tabTitleList = document.getElementById('tabTitleList');
+        if (tabTitleList) tabTitleList.textContent = t.tabList;
+        const tabTitleManage = document.getElementById('tabTitleManage');
+        if (tabTitleManage) tabTitleManage.textContent = t.tabManage;
+
+        const headlineStats = document.getElementById('headlineStats');
+        if (headlineStats) headlineStats.textContent = t.headlineStats;
+        const statsLiveBadge = document.getElementById('statsLiveBadge');
+        if (statsLiveBadge) statsLiveBadge.textContent = t.statsLive;
+        const lblCompletionRate = document.getElementById('lblCompletionRate');
+        if (lblCompletionRate) lblCompletionRate.textContent = t.lblCompletionRate;
+
+        const lblPieHint = document.getElementById('lblPieHint');
+        if (lblPieHint && t.lblPieHint) lblPieHint.textContent = t.lblPieHint;
+        const legendCompletedTitle = document.getElementById('legendCompletedTitle');
+        if (legendCompletedTitle && t.legendCompletedTitle) legendCompletedTitle.textContent = t.legendCompletedTitle;
+        const legendPendingTitle = document.getElementById('legendPendingTitle');
+        if (legendPendingTitle && t.legendPendingTitle) legendPendingTitle.textContent = t.legendPendingTitle;
+        const pieStatusBadge = document.getElementById('pieStatusBadge');
+        if (pieStatusBadge && t.pieStatusBadge) {
+          pieStatusBadge.innerHTML = `${svgIcons.info} <span>${t.pieStatusBadge}</span>`;
+        }
+
+        const lblTotalTasks = document.getElementById('lblTotalTasks');
+        if (lblTotalTasks) lblTotalTasks.textContent = t.lblTotalTasks;
+        const lblCompletedTasks = document.getElementById('lblCompletedTasks');
+        if (lblCompletedTasks) lblCompletedTasks.textContent = t.lblCompletedTasks;
+        const lblPendingTasks = document.getElementById('lblPendingTasks');
+        if (lblPendingTasks) lblPendingTasks.textContent = t.lblPendingTasks;
+
+        const archiveHeading = document.getElementById('archiveHeading');
+        if (archiveHeading) archiveHeading.textContent = t.archiveHeading;
+        const archiveDesc = document.getElementById('archiveDesc');
+        if (archiveDesc) archiveDesc.textContent = t.archiveDesc;
+        const btnArchiveToday = document.getElementById('btnArchiveToday');
+        if (btnArchiveToday) btnArchiveToday.textContent = t.btnArchiveToday;
+        const btnArchiveAll = document.getElementById('btnArchiveAll');
+        if (btnArchiveAll) btnArchiveAll.textContent = t.btnArchiveAll;
+
+        const headlineList = document.getElementById('headlineList');
+        if (headlineList) headlineList.textContent = t.headlineList;
+        const listSearchInput = document.getElementById('listSearchInput');
+        if (listSearchInput) listSearchInput.placeholder = t.searchPlaceholder;
+        const lblSort = document.getElementById('lblSort');
+        if (lblSort) lblSort.textContent = t.lblSort;
+        const optSortManual = document.getElementById('optSortManual');
+        if (optSortManual) optSortManual.textContent = t.optSortManual;
+        const optSortAZ = document.getElementById('optSortAZ');
+        if (optSortAZ) optSortAZ.textContent = t.optSortAZ;
+        const optSortPriority = document.getElementById('optSortPriority');
+        if (optSortPriority) optSortPriority.textContent = t.optSortPriority;
+        const optSortDate = document.getElementById('optSortDate');
+        if (optSortDate) optSortDate.textContent = t.optSortDate;
+        const optFilterAll = document.getElementById('optFilterAll');
+        if (optFilterAll) optFilterAll.textContent = t.optFilterAll;
+        const optFilterActive = document.getElementById('optFilterActive');
+        if (optFilterActive) optFilterActive.textContent = t.optFilterActive;
+        const optFilterCompleted = document.getElementById('optFilterCompleted');
+        if (optFilterCompleted) optFilterCompleted.textContent = t.optFilterCompleted;
+
+        const headlineManage = document.getElementById('headlineManage');
+        if (headlineManage) headlineManage.textContent = t.headlineManage;
+        const btnClearCompletedTop = document.getElementById('btnClearCompletedTop');
+        if (btnClearCompletedTop) {
+          btnClearCompletedTop.innerHTML = `${svgIcons.check} <span>${t.btnClearCompleted}</span>`;
+        }
+        const btnClearCompletedBottom = document.getElementById('btnClearCompletedBottom');
+        if (btnClearCompletedBottom) {
+          btnClearCompletedBottom.innerHTML = `${svgIcons.trash} <span>${t.btnClearCompleted}</span>`;
+        }
+
+        const formAddHeading = document.getElementById('formAddHeading');
+        if (formAddHeading) formAddHeading.textContent = t.formAddHeading;
+        const lblTaskTitle = document.getElementById('lblTaskTitle');
+        if (lblTaskTitle) lblTaskTitle.textContent = t.lblTaskTitle;
+        const taskTitleInput = document.getElementById('taskTitleInput');
+        if (taskTitleInput) taskTitleInput.placeholder = t.taskTitlePlaceholder;
+        const lblTaskDateTime = document.getElementById('lblTaskDateTime');
+        if (lblTaskDateTime) lblTaskDateTime.textContent = t.lblTaskDateTime;
+        const lblTaskPriority = document.getElementById('lblTaskPriority');
+        if (lblTaskPriority) lblTaskPriority.textContent = t.lblTaskPriority;
+        const optAddMedium = document.getElementById('optAddMedium');
+        if (optAddMedium) optAddMedium.textContent = t.optPriorityMedium;
+        const optAddHigh = document.getElementById('optAddHigh');
+        if (optAddHigh) optAddHigh.textContent = t.optPriorityHigh;
+        const optAddLow = document.getElementById('optAddLow');
+        if (optAddLow) optAddLow.textContent = t.optPriorityLow;
+        const lblSubtasksSection = document.getElementById('lblSubtasksSection');
+        if (lblSubtasksSection) lblSubtasksSection.textContent = t.lblSubtasksSection;
+        const descSubtasks = document.getElementById('descSubtasks');
+        if (descSubtasks) descSubtasks.textContent = t.descSubtasks;
+        const subtaskDraftInput = document.getElementById('subtaskDraftInput');
+        if (subtaskDraftInput) subtaskDraftInput.placeholder = t.subtaskDraftPlaceholder;
+        const btnAddSubtaskDraft = document.getElementById('btnAddSubtaskDraft');
+        if (btnAddSubtaskDraft) {
+          btnAddSubtaskDraft.innerHTML = `${svgIcons.plus} <span>${t.btnAddSubtaskDraft.replace(/^\+\s*/, '')}</span>`;
+        }
+        const txtFormHint = document.getElementById('txtFormHint');
+        if (txtFormHint) txtFormHint.textContent = t.txtFormHint;
+        const btnSubmitTask = document.getElementById('btnSubmitTask');
+        if (btnSubmitTask) {
+          btnSubmitTask.innerHTML = `${svgIcons.plus} <span>${t.btnSubmitTask}</span>`;
+        }
+        const headingManageList = document.getElementById('headingManageList');
+        if (headingManageList) headingManageList.textContent = t.headingManageList;
+
+        const editModalHeading = document.getElementById('editModalHeading');
+        if (editModalHeading) editModalHeading.textContent = t.editModalHeading;
+        const editTaskTitleLabel = document.getElementById('editTaskTitleLabel');
+        if (editTaskTitleLabel) editTaskTitleLabel.textContent = t.lblTaskTitle;
+        const editTaskDateLabel = document.getElementById('editTaskDateLabel');
+        if (editTaskDateLabel) editTaskDateLabel.textContent = t.lblTaskDateTime;
+        const editTaskPriorityLabel = document.getElementById('editTaskPriorityLabel');
+        if (editTaskPriorityLabel) editTaskPriorityLabel.textContent = t.lblTaskPriority;
+        const optEditHigh = document.getElementById('optEditHigh');
+        if (optEditHigh) optEditHigh.textContent = t.optPriorityHigh;
+        const optEditMedium = document.getElementById('optEditMedium');
+        if (optEditMedium) optEditMedium.textContent = t.optPriorityMedium;
+        const optEditLow = document.getElementById('optEditLow');
+        if (optEditLow) optEditLow.textContent = t.optPriorityLow;
+        const editSubtasksLabel = document.getElementById('editSubtasksLabel');
+        if (editSubtasksLabel) editSubtasksLabel.textContent = t.lblSubtasksSection;
+        const btnAddEditSubtask = document.getElementById('btnAddEditSubtask');
+        if (btnAddEditSubtask) {
+          btnAddEditSubtask.innerHTML = `${svgIcons.plus} <span>${t.btnAddSubtaskDraft.replace(/^\+\s*/, '')}</span>`;
+        }
+        const btnCancelEdit = document.getElementById('btnCancelEdit');
+        if (btnCancelEdit) btnCancelEdit.textContent = t.btnCancel;
+        const btnSaveEdit = document.getElementById('btnSaveEdit');
+        if (btnSaveEdit) {
+          btnSaveEdit.innerHTML = `${svgIcons.check} <span>${t.btnSave}</span>`;
+        }
+        const btnDeleteInEdit = document.getElementById('btnDeleteInEdit');
+        if (btnDeleteInEdit) {
+          btnDeleteInEdit.innerHTML = `${svgIcons.trash} <span>${t.btnDelete}</span>`;
+        }
+
+        const settingsModalTitle = document.getElementById('settingsModalTitle');
+        if (settingsModalTitle) settingsModalTitle.textContent = t.settingsModalTitle;
+        const langSelectLabel = document.getElementById('langSelectLabel');
+        if (langSelectLabel) langSelectLabel.textContent = t.langSelectLabel;
+        const reopenGuideLabel = document.getElementById('reopenGuideLabel');
+        if (reopenGuideLabel) reopenGuideLabel.textContent = t.reopenGuideLabel;
+        const reopenGuideDesc = document.getElementById('reopenGuideDesc');
+        if (reopenGuideDesc) reopenGuideDesc.textContent = t.reopenGuideDesc;
+        const reopenGuideBtn = document.getElementById('reopenGuideBtn');
+        if (reopenGuideBtn) {
+          reopenGuideBtn.innerHTML = `${svgIcons.newspaper} <span>${t.reopenGuideBtn}</span>`;
+        }
+        const storageInfoLabel = document.getElementById('storageInfoLabel');
+        if (storageInfoLabel) storageInfoLabel.textContent = t.storageInfoLabel;
+        const clearAllDataBtn = document.getElementById('clearAllDataBtn');
+        if (clearAllDataBtn) {
+          clearAllDataBtn.innerHTML = `${svgIcons.trash} <span>${t.clearAllDataBtn}</span>`;
+        }
+        const footerText = document.getElementById('footerText');
+        if (footerText) footerText.textContent = t.footerText;
+
+        // Dil butonlarının aktifliğini güncelle
+        ['tr', 'en', 'de', 'it', 'ru', 'fr'].forEach(lang => {
+          const btn = document.getElementById('langBtn' + lang.charAt(0).toUpperCase() + lang.slice(1));
+          if (btn) {
+            if (lang === currentLang) {
+              btn.classList.add('active');
+            } else {
+              btn.classList.remove('active');
+            }
+          }
+        });
+
+        updateHeaderDate();
+        renderAll();
+      }
+
+      function changeLanguage(lang) {
+        currentLang = lang;
+        localStorage.setItem(STORAGE_KEY_LANG, lang);
+        applyTranslations();
+        const langToastMap = {
+          tr: 'Dil Türkçe olarak ayarlandı.',
+          en: 'Language switched to English.',
+          de: 'Sprache auf Deutsch eingestellt.',
+          it: 'Lingua impostata su Italiano.',
+          ru: 'Язык изменён на русский.',
+          fr: 'Langue changée en Français.'
+        };
+        showToast(langToastMap[lang] || langToastMap.en);
+        closeSettingsModal();
+      }
+
+      /* --- BÖLÜM GEÇİŞLERİ (TAB SWITCHING) --- */
+      function switchSection(sectionName) {
+        activeSection = sectionName;
+        
+        document.querySelectorAll('.newspaper-section').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.nav-tab-btn').forEach(el => el.classList.remove('active'));
+
+        if (sectionName === 'stats') {
+          document.getElementById('sectionStats').classList.add('active');
+          document.getElementById('tabBtnStats').classList.add('active');
+          renderStats();
+          renderArchiveLog();
+        } else if (sectionName === 'list') {
+          document.getElementById('sectionList').classList.add('active');
+          document.getElementById('tabBtnList').classList.add('active');
+          filterAndRenderPureList();
+        } else if (sectionName === 'manage') {
+          document.getElementById('sectionManage').classList.add('active');
+          document.getElementById('tabBtnManage').classList.add('active');
+          renderManageList();
+        }
+      }
+
+      /* --- GÖREV EKLEME & YÖNETİMİ --- */
+      function handleAddTask(e) {
+        e.preventDefault();
+        const title = document.getElementById('taskTitleInput').value.trim();
+        if (!title) return;
+
+        const datetime = document.getElementById('taskDateTimeInput').value;
+        const priority = document.getElementById('taskPrioritySelect').value;
+        const todayStr = getTodayDateString();
+
+        const newTask = {
+          id: 'task_' + Date.now(),
+          title: title,
+          datetime: datetime || '',
+          priority: priority,
+          createdDate: todayStr,
+          completed: false,
+          completedDate: null,
+          subtasks: [...currentDraftSubtasks]
+        };
+
+        tasks.unshift(newTask);
+        saveData();
+
+        // Formu temizle
+        document.getElementById('taskTitleInput').value = '';
+        document.getElementById('taskDateTimeInput').value = '';
+        document.getElementById('taskPrioritySelect').value = 'medium';
+        currentDraftSubtasks = [];
+        renderDraftSubtasks();
+
+        showToast(translations[currentLang].toastTaskAdded);
+        renderAll();
+      }
+
+      // Alt Görev Taslakları (Formda eklenirken)
+      function addDraftSubtask() {
+        const input = document.getElementById('subtaskDraftInput');
+        const text = input.value.trim();
+        if (!text) return;
+
+        currentDraftSubtasks.push({
+          id: 'st_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+          text: text,
+          completed: false
+        });
+
+        input.value = '';
+        input.focus();
+        renderDraftSubtasks();
+      }
+
+      function handleSubtaskInputKey(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          addDraftSubtask();
+        }
+      }
+
+      function removeDraftSubtask(index) {
+        currentDraftSubtasks.splice(index, 1);
+        renderDraftSubtasks();
+      }
+
+      function renderDraftSubtasks() {
+        const container = document.getElementById('draftSubtasksList');
+        if (!container) return;
+        if (currentDraftSubtasks.length === 0) {
+          container.innerHTML = '';
+          return;
+        }
+
+        container.innerHTML = currentDraftSubtasks.map((st, i) => `
+          <div class="draft-subtask-item">
+            <span class="subtask-bullet" aria-hidden="true"></span>
+            <span style="flex:1;">${escapeHtml(st.text)}</span>
+            <button type="button" class="btn btn-small btn-danger" onclick="removeDraftSubtask(${i})" title="Sil" aria-label="Alt görevi sil">${svgIcons.close}</button>
+          </div>
+        `).join('');
+      }
+
+      /* --- GÖREV DÜZENLEME MODAL İŞLEMLERİ --- */
+      function openEditModal(taskId) {
+        const task = tasks.find(t => t.id === taskId);
+        if (!task) return;
+
+        document.getElementById('editTaskId').value = task.id;
+        document.getElementById('editTaskTitle').value = task.title;
+        document.getElementById('editTaskDate').value = task.datetime || '';
+        document.getElementById('editTaskPriority').value = task.priority;
+        currentEditSubtasks = task.subtasks ? JSON.parse(JSON.stringify(task.subtasks)) : [];
+
+        renderEditSubtasks();
+        document.getElementById('editTaskModal').classList.add('open');
+      }
+
+      function closeEditModal() {
+        document.getElementById('editTaskModal').classList.remove('open');
+      }
+
+      function addEditModalSubtask() {
+        const input = document.getElementById('editNewSubtaskInput');
+        const text = input.value.trim();
+        if (!text) return;
+
+        currentEditSubtasks.push({
+          id: 'st_' + Date.now(),
+          text: text,
+          completed: false
+        });
+
+        input.value = '';
+        renderEditSubtasks();
+      }
+
+      function removeEditModalSubtask(index) {
+        currentEditSubtasks.splice(index, 1);
+        renderEditSubtasks();
+      }
+
+      function renderEditSubtasks() {
+        const container = document.getElementById('editSubtasksList');
+        if (!container) return;
+        container.innerHTML = currentEditSubtasks.map((st, i) => `
+          <div class="draft-subtask-item">
+            <span class="subtask-bullet" aria-hidden="true"></span>
+            <span style="flex:1;">${escapeHtml(st.text)}</span>
+            <button type="button" class="btn btn-small btn-danger" onclick="removeEditModalSubtask(${i})" title="Sil" aria-label="Alt görevi sil">${svgIcons.close}</button>
+          </div>
+        `).join('');
+      }
+
+      function saveEditedTask(e) {
+        e.preventDefault();
+        const taskId = document.getElementById('editTaskId').value;
+        const task = tasks.find(t => t.id === taskId);
+        if (!task) return;
+
+        task.title = document.getElementById('editTaskTitle').value.trim();
+        task.datetime = document.getElementById('editTaskDate').value;
+        task.priority = document.getElementById('editTaskPriority').value;
+        task.subtasks = currentEditSubtasks;
+
+        saveData();
+        closeEditModal();
+        showToast(translations[currentLang].toastTaskUpdated);
+        renderAll();
+      }
+
+      /* --- GÖREV SİLME & DURUM DEĞİŞTİRME --- */
+      function toggleTask(taskId) {
+        const task = tasks.find(t => t.id === taskId);
+        if (!task) return;
+
+        task.completed = !task.completed;
+        task.completedDate = task.completed ? getTodayDateString() : null;
+
+        // Eğer ana görev tamamlandıysa alt görevleri de eşleyelim (isteğe bağlı ama kullanıcı dostu)
+        if (task.subtasks && task.subtasks.length > 0) {
+          task.subtasks.forEach(st => st.completed = task.completed);
+        }
+
+        saveData();
+        renderAll();
+      }
+
+      function toggleSubtask(taskId, subtaskId) {
+        const task = tasks.find(t => t.id === taskId);
+        if (!task || !task.subtasks) return;
+
+        const subtask = task.subtasks.find(s => s.id === subtaskId);
+        if (!subtask) return;
+
+        subtask.completed = !subtask.completed;
+
+        // Alt görevlerin hepsi tamamlandıysa ana görevi de tamamlayabiliriz
+        const allDone = task.subtasks.every(s => s.completed);
+        if (allDone) {
+          task.completed = true;
+          task.completedDate = getTodayDateString();
+        } else {
+          // Hepsi yapılmadıysa ana görev aktif kalır
+          task.completed = false;
+          task.completedDate = null;
+        }
+
+        saveData();
+        renderAll();
+      }
+
+      /* --- ÖZEL ONAY MODALI & GÖREV SİLME YÖNETİMİ --- */
+      let pendingConfirmAction = null;
+
+      function openConfirmModal(options) {
+        const modal = document.getElementById('confirmModal');
+        const titleEl = document.getElementById('confirmModalTitle');
+        const messageEl = document.getElementById('confirmModalMessage');
+        const cancelBtn = document.getElementById('confirmModalCancelBtn');
+        const acceptBtn = document.getElementById('confirmModalAcceptBtn');
+        const t = translations[currentLang] || translations.tr;
+
+        titleEl.textContent = options.title || t.confirmModalTitle || 'Onay Gerekiyor';
+        messageEl.textContent = options.message || '';
+        cancelBtn.textContent = options.cancelText || t.btnCancel || 'İptal';
+        acceptBtn.textContent = options.confirmText || t.btnDelete || 'Sil';
+
+        if (options.isDanger === false) {
+          acceptBtn.className = 'btn btn-filled';
+        } else {
+          acceptBtn.className = 'btn btn-filled btn-danger';
+        }
+
+        pendingConfirmAction = options.onConfirm;
+        modal.classList.add('open');
+      }
+
+      function closeConfirmModal() {
+        const modal = document.getElementById('confirmModal');
+        modal.classList.remove('open');
+        pendingConfirmAction = null;
+      }
+
+      function handleConfirmModalAccept() {
+        if (typeof pendingConfirmAction === 'function') {
+          const action = pendingConfirmAction;
+          closeConfirmModal();
+          action();
+        } else {
+          closeConfirmModal();
+        }
+      }
+
+      function deleteTask(taskId) {
+        const t = translations[currentLang];
+        const task = tasks.find(x => x.id === taskId);
+        const taskTitle = task ? `"${task.title}"` : '';
+
+        openConfirmModal({
+          title: t.btnDelete || 'Görevi Sil',
+          message: taskTitle ? `${taskTitle} görevini silmek istediğinize emin misiniz?` : t.confirmDeleteTask,
+          confirmText: t.btnDelete || 'Sil',
+          isDanger: true,
+          onConfirm: () => {
+            tasks = tasks.filter(x => x.id !== taskId);
+            saveData();
+            showToast(t.toastTaskDeleted);
+            renderAll();
+          }
+        });
+      }
+
+      function deleteFromEditModal() {
+        const taskId = document.getElementById('editTaskId').value;
+        if (!taskId) return;
+        closeEditModal();
+        deleteTask(taskId);
+      }
+
+      function deleteSubtask(taskId, subtaskId) {
+        const task = tasks.find(t => t.id === taskId);
+        if (!task || !task.subtasks) return;
+        task.subtasks = task.subtasks.filter(s => s.id !== subtaskId);
+        saveData();
+        renderAll();
+      }
+
+      function confirmClearCompletedTasks() {
+        const t = translations[currentLang];
+        const completedCount = tasks.filter(x => x.completed).length;
+        if (completedCount === 0) {
+          showToast(t.emptyTasksList);
+          return;
+        }
+
+        openConfirmModal({
+          title: t.btnClearCompleted || 'Tamamlananları Sil',
+          message: t.confirmClearCompleted,
+          confirmText: t.btnClearCompleted || 'Sil',
+          isDanger: true,
+          onConfirm: () => {
+            tasks = tasks.filter(x => !x.completed);
+            saveData();
+            showToast(t.toastCompletedCleared);
+            renderAll();
+          }
+        });
+      }
+
+      function confirmClearAllData() {
+        const t = translations[currentLang];
+        openConfirmModal({
+          title: t.clearAllDataBtn || 'Tüm Verileri Temizle',
+          message: t.confirmClearAll,
+          confirmText: t.clearAllDataBtn || 'Sıfırla',
+          isDanger: true,
+          onConfirm: () => {
+            tasks = [];
+            saveData();
+            closeSettingsModal();
+            showToast(t.toastAllCleared || 'Tüm veriler sıfırlandı.');
+            renderAll();
+          }
+        });
+      }
+
+      /* --- RENDER 1: İNTERAKTİF DAİRE DİLİMİ & İSTATİSTİKLER & TARİH ARŞİVİ --- */
+      function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
+        const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
+        return {
+          x: centerX + (radius * Math.cos(angleInRadians)),
+          y: centerY + (radius * Math.sin(angleInRadians))
+        };
+      }
+
+      function describeDonutSlice(x, y, innerRadius, outerRadius, startAngle, endAngle) {
+        const startOuter = polarToCartesian(x, y, outerRadius, endAngle);
+        const endOuter = polarToCartesian(x, y, outerRadius, startAngle);
+        const startInner = polarToCartesian(x, y, innerRadius, startAngle);
+        const endInner = polarToCartesian(x, y, innerRadius, endAngle);
+
+        const angleDiff = endAngle - startAngle;
+        const largeArcFlag = angleDiff <= 180 ? "0" : "1";
+
+        return [
+          "M", startOuter.x, startOuter.y,
+          "A", outerRadius, outerRadius, 0, largeArcFlag, 0, endOuter.x, endOuter.y,
+          "L", startInner.x, startInner.y,
+          "A", innerRadius, innerRadius, 0, largeArcFlag, 1, endInner.x, endInner.y,
+          "Z"
+        ].join(" ");
+      }
+
+      function describeFullDonut(x, y, innerRadius, outerRadius) {
+        return `
+          M ${x} ${y - outerRadius}
+          A ${outerRadius} ${outerRadius} 0 1 0 ${x} ${y + outerRadius}
+          A ${outerRadius} ${outerRadius} 0 1 0 ${x} ${y - outerRadius}
+          M ${x} ${y - innerRadius}
+          A ${innerRadius} ${innerRadius} 0 1 1 ${x} ${y + innerRadius}
+          A ${innerRadius} ${innerRadius} 0 1 1 ${x} ${y - innerRadius}
+          Z
+        `;
+      }
+
+      function renderStats() {
+        const t = translations[currentLang] || translations.tr;
+        const total = tasks.length;
+        const completed = tasks.filter(t => t.completed).length;
+        const pending = total - completed;
+        const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
+
+        // İstatistik kartları
+        const statTotalEl = document.getElementById('statTotalCount');
+        const statCompEl = document.getElementById('statCompletedCount');
+        const statPendEl = document.getElementById('statPendingCount');
+        if (statTotalEl) statTotalEl.textContent = total;
+        if (statCompEl) statCompEl.textContent = completed;
+        if (statPendEl) statPendEl.textContent = pending;
+
+        // Merkez kutusu
+        const percentageText = document.getElementById('statPercentageText');
+        const centerLabel = document.getElementById('pieCenterLabel');
+        const centerSub = document.getElementById('pieCenterSub');
+        if (percentageText) percentageText.textContent = percentage + '%';
+        if (centerLabel) centerLabel.textContent = t.pieCompletedLabel || 'Tamamlandı';
+        if (centerSub) centerSub.textContent = `${completed}/${total} ${t.pieTotalLabel || 'Görev'}`;
+
+        // Açıklama (Legend)
+        const compMeta = document.getElementById('legendCompletedMeta');
+        const pendMeta = document.getElementById('legendPendingMeta');
+        if (compMeta) compMeta.textContent = `${completed} ${t.pieTotalLabel || 'Görev'} (%${percentage})`;
+        if (pendMeta) pendMeta.textContent = `${pending} ${t.pieTotalLabel || 'Görev'} (%${total === 0 ? 0 : 100 - percentage})`;
+
+        // İnteraktif Daire Dilimleri Çizimi (SVG)
+        renderPieChartSvg(total, completed, pending, percentage);
+
+        const progressBar = document.getElementById('statProgressBar');
+        if (progressBar) progressBar.style.width = percentage + '%';
+      }
+
+      function renderPieChartSvg(total, completed, pending, percentage) {
+        const svg = document.getElementById('interactivePieSvg');
+        if (!svg) return;
+
+        const cx = 110;
+        const cy = 110;
+        const R = 95;
+        const r = 62;
+        const t = translations[currentLang] || translations.tr;
+
+        svg.innerHTML = '';
+
+        if (total === 0) {
+          // Sıfır görev boş durum halkası (Clean Minimalism)
+          const emptyRing = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          emptyRing.setAttribute('d', describeFullDonut(cx, cy, r, R));
+          emptyRing.setAttribute('fill', '#f5f5f5');
+          emptyRing.setAttribute('stroke', '#000000');
+          emptyRing.setAttribute('stroke-width', '2');
+          emptyRing.setAttribute('stroke-dasharray', '5,4');
+          emptyRing.setAttribute('class', 'chart-slice');
+          emptyRing.innerHTML = `<title>${t.emptyTasksList}</title>`;
+          svg.appendChild(emptyRing);
+          return;
+        }
+
+        if (completed === total) {
+          // %100 Tamamı Tamamlanmış Tek Daire Dilimi
+          const fullComp = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          fullComp.setAttribute('id', 'sliceCompleted');
+          fullComp.setAttribute('d', describeFullDonut(cx, cy, r, R));
+          fullComp.setAttribute('fill', 'var(--ink-black)');
+          fullComp.setAttribute('stroke', 'var(--ink-black)');
+          fullComp.setAttribute('stroke-width', '2');
+          fullComp.setAttribute('class', 'chart-slice');
+          fullComp.innerHTML = `<title>${t.legendCompletedTitle}: ${completed}/${total} (%100)</title>`;
+          
+          fullComp.addEventListener('mouseenter', () => highlightPieSlice('completed'));
+          fullComp.addEventListener('mouseleave', () => resetPieSliceHighlight());
+          fullComp.addEventListener('click', () => filterBySlice('completed'));
+          svg.appendChild(fullComp);
+          return;
+        }
+
+        if (completed === 0) {
+          // %100 Tamamı Bekleyen Tek Daire Dilimi
+          const fullPend = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          fullPend.setAttribute('id', 'slicePending');
+          fullPend.setAttribute('d', describeFullDonut(cx, cy, r, R));
+          fullPend.setAttribute('fill', '#e5e5e5');
+          fullPend.setAttribute('stroke', 'var(--ink-black)');
+          fullPend.setAttribute('stroke-width', '2');
+          fullPend.setAttribute('class', 'chart-slice');
+          fullPend.innerHTML = `<title>${t.legendPendingTitle}: ${pending}/${total} (%100)</title>`;
+          
+          fullPend.addEventListener('mouseenter', () => highlightPieSlice('pending'));
+          fullPend.addEventListener('mouseleave', () => resetPieSliceHighlight());
+          fullPend.addEventListener('click', () => filterBySlice('pending'));
+          svg.appendChild(fullPend);
+          return;
+        }
+
+        // İki parçalı daire dilimi (Tamamlanan + Bekleyen)
+        const completedAngle = (completed / total) * 360;
+
+        // 1. Tamamlanan Dilimi (Siyah / Ink Black)
+        const sliceComp = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        sliceComp.setAttribute('id', 'sliceCompleted');
+        sliceComp.setAttribute('d', describeDonutSlice(cx, cy, r, R, 0, completedAngle));
+        sliceComp.setAttribute('fill', 'var(--ink-black)');
+        sliceComp.setAttribute('stroke', 'var(--ink-black)');
+        sliceComp.setAttribute('stroke-width', '2');
+        sliceComp.setAttribute('class', 'chart-slice');
+        sliceComp.innerHTML = `<title>${t.legendCompletedTitle}: ${completed} (%${percentage})</title>`;
+        sliceComp.addEventListener('mouseenter', () => highlightPieSlice('completed'));
+        sliceComp.addEventListener('mouseleave', () => resetPieSliceHighlight());
+        sliceComp.addEventListener('click', () => filterBySlice('completed'));
+        svg.appendChild(sliceComp);
+
+        // 2. Bekleyen Dilimi (Açık Gri / White-Silver)
+        const slicePend = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        slicePend.setAttribute('id', 'slicePending');
+        slicePend.setAttribute('d', describeDonutSlice(cx, cy, r, R, completedAngle, 360));
+        slicePend.setAttribute('fill', '#e5e5e5');
+        slicePend.setAttribute('stroke', 'var(--ink-black)');
+        slicePend.setAttribute('stroke-width', '2');
+        slicePend.setAttribute('class', 'chart-slice');
+        slicePend.innerHTML = `<title>${t.legendPendingTitle}: ${pending} (%${100 - percentage})</title>`;
+        slicePend.addEventListener('mouseenter', () => highlightPieSlice('pending'));
+        slicePend.addEventListener('mouseleave', () => resetPieSliceHighlight());
+        slicePend.addEventListener('click', () => filterBySlice('pending'));
+        svg.appendChild(slicePend);
+      }
+
+      function highlightPieSlice(type) {
+        const sliceEl = document.getElementById(type === 'completed' ? 'sliceCompleted' : 'slicePending');
+        const legendEl = document.getElementById(type === 'completed' ? 'legendCompleted' : 'legendPending');
+        
+        if (sliceEl) sliceEl.classList.add('highlighted');
+        if (legendEl) legendEl.classList.add('active-hover');
+
+        const total = tasks.length;
+        const completed = tasks.filter(t => t.completed).length;
+        const pending = total - completed;
+        const t = translations[currentLang] || translations.tr;
+
+        const valEl = document.getElementById('statPercentageText');
+        const lblEl = document.getElementById('pieCenterLabel');
+        const subEl = document.getElementById('pieCenterSub');
+
+        if (type === 'completed') {
+          const compPct = total === 0 ? 0 : Math.round((completed / total) * 100);
+          if (valEl) valEl.textContent = `${completed}`;
+          if (lblEl) lblEl.textContent = `%${compPct} ${t.pieCompletedLabel || 'Tamamlandı'}`;
+          if (subEl) subEl.textContent = `Filtrelemek için tıkla`;
+        } else {
+          const pendPct = total === 0 ? 0 : Math.round((pending / total) * 100);
+          if (valEl) valEl.textContent = `${pending}`;
+          if (lblEl) lblEl.textContent = `%${pendPct} ${t.piePendingLabel || 'Bekliyor'}`;
+          if (subEl) subEl.textContent = `Filtrelemek için tıkla`;
+        }
+      }
+
+      function resetPieSliceHighlight() {
+        const sliceComp = document.getElementById('sliceCompleted');
+        const slicePend = document.getElementById('slicePending');
+        const legComp = document.getElementById('legendCompleted');
+        const legPend = document.getElementById('legendPending');
+
+        if (sliceComp) sliceComp.classList.remove('highlighted');
+        if (slicePend) slicePend.classList.remove('highlighted');
+        if (legComp) legComp.classList.remove('active-hover');
+        if (legPend) legPend.classList.remove('active-hover');
+
+        const total = tasks.length;
+        const completed = tasks.filter(t => t.completed).length;
+        const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
+        const t = translations[currentLang] || translations.tr;
+
+        const valEl = document.getElementById('statPercentageText');
+        const lblEl = document.getElementById('pieCenterLabel');
+        const subEl = document.getElementById('pieCenterSub');
+
+        if (valEl) valEl.textContent = percentage + '%';
+        if (lblEl) lblEl.textContent = t.pieCompletedLabel || 'Tamamlandı';
+        if (subEl) subEl.textContent = `${completed}/${total} ${t.pieTotalLabel || 'Görev'}`;
+      }
+
+      function filterBySlice(type) {
+        // İlgili dilime tıklandığında otomatik olarak Salt Liste ekranına geçer ve o durumu filtreler
+        switchSection('list');
+        const filterSelect = document.getElementById('listFilterSelect');
+        if (filterSelect) {
+          filterSelect.value = type === 'completed' ? 'completed' : 'active';
+          filterAndRenderPureList();
+        }
+
+        const t = translations[currentLang] || translations.tr;
+        const msg = type === 'completed' 
+          ? (t.legendCompletedTitle || 'Tamamlanan Görevler') + ' listelendi.'
+          : (t.legendPendingTitle || 'Bekleyen Görevler') + ' listelendi.';
+        showToast(msg);
+      }
+
+      function setArchiveToday() {
+        const picker = document.getElementById('archiveDatePicker');
+        picker.value = getTodayDateString();
+        renderArchiveLog();
+      }
+
+      function clearArchiveFilter() {
+        const picker = document.getElementById('archiveDatePicker');
+        picker.value = '';
+        renderArchiveLog();
+      }
+
+      function renderArchiveLog() {
+        const container = document.getElementById('archiveTasksContainer');
+        const summaryText = document.getElementById('archiveDateSummary');
+        const picker = document.getElementById('archiveDatePicker');
+        const selectedDate = picker.value; // YYYY-MM-DD
+        const t = translations[currentLang];
+
+        let filtered = [];
+
+        if (selectedDate) {
+          // Seçilen tarihte oluşturulmuş, vadesi o tarih olan veya o tarihte tamamlanmış olanlar
+          filtered = tasks.filter(task => {
+            const isCreatedOnDate = task.createdDate === selectedDate;
+            const isCompletedOnDate = task.completedDate === selectedDate;
+            const isDueOnDate = task.datetime && task.datetime.startsWith(selectedDate);
+            return isCreatedOnDate || isCompletedOnDate || isDueOnDate;
+          });
+
+          summaryText.innerHTML = `<span style="display:inline-flex;align-items:center;gap:6px;">${svgIcons.calendar} ${selectedDate} Tarihli Kayıtlar (${filtered.length} Görev)</span>`;
+        } else {
+          // Tüm geçmiş kayıtlar
+          filtered = [...tasks];
+          summaryText.innerHTML = `<span style="display:inline-flex;align-items:center;gap:6px;">${svgIcons.calendar} Tüm Zamanların Görev Arşiv Kaydı (${filtered.length} Görev)</span>`;
+        }
+
+        if (filtered.length === 0) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-title">${t.emptyArchiveList}</div>
+              <p style="font-size: 0.9rem; color: var(--ink-subtle);">
+                ${selectedDate ? 'Bu tarihte yapılmış veya bekleyen bir görev kaydı girilmemiş.' : 'Henüz arşivlenmiş görev yok.'}
+              </p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = filtered.map(task => renderTaskItemHtml(task, true)).join('');
+      }
+
+      /* --- RENDER 2: SALT LİSTE (A-Z, ÖNCELİK, MANUEL) --- */
+      function filterAndRenderPureList() {
+        const container = document.getElementById('pureTasksListContainer');
+        const countInfo = document.getElementById('pureListCountInfo');
+        const searchTerm = (document.getElementById('listSearchInput').value || '').toLowerCase().trim();
+        const sortType = document.getElementById('listSortSelect').value; // 'manual', 'az', 'priority', 'date'
+        const filterType = document.getElementById('listFilterSelect').value; // 'all', 'active', 'completed'
+        const t = translations[currentLang];
+
+        let list = [...tasks];
+
+        // Durum Filtresi
+        if (filterType === 'active') {
+          list = list.filter(t => !t.completed);
+        } else if (filterType === 'completed') {
+          list = list.filter(t => t.completed);
+        }
+
+        // Arama Filtresi
+        if (searchTerm) {
+          list = list.filter(t => {
+            const inTitle = t.title.toLowerCase().includes(searchTerm);
+            const inSubtasks = t.subtasks && t.subtasks.some(st => st.text.toLowerCase().includes(searchTerm));
+            return inTitle || inSubtasks;
+          });
+        }
+
+        // Sıralama
+        if (sortType === 'az') {
+          list.sort((a, b) => a.title.localeCompare(b.title, currentLang));
+        } else if (sortType === 'priority') {
+          const weight = { high: 3, medium: 2, low: 1 };
+          list.sort((a, b) => (weight[b.priority] || 0) - (weight[a.priority] || 0));
+        } else if (sortType === 'date') {
+          list.sort((a, b) => {
+            if (!a.datetime) return 1;
+            if (!b.datetime) return -1;
+            return new Date(a.datetime) - new Date(b.datetime);
+          });
+        }
+        // 'manual' ise orijinal sıra korunur.
+
+        countInfo.textContent = `${list.length} Görev Listeleniyor`;
+
+        if (list.length === 0) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-title">${t.emptyTasksList}</div>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = list.map(task => renderTaskItemHtml(task, true)).join('');
+      }
+
+      /* --- RENDER 3: DÜZENLEME & YÖNETİM LİSTESİ --- */
+      function renderManageList() {
+        const container = document.getElementById('manageTasksListContainer');
+        const t = translations[currentLang];
+
+        if (tasks.length === 0) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-title">${t.emptyTasksList}</div>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = tasks.map(task => renderTaskItemHtml(task, true)).join('');
+      }
+
+      /* --- TEKİL GÖREV HTML ŞABLONU --- */
+      function renderTaskItemHtml(task, isManageMode) {
+        const t = translations[currentLang];
+        const isChecked = task.completed ? 'checked' : '';
+        const completedClass = task.completed ? 'completed' : '';
+        
+        const priorityLabels = {
+          high: t.priorityHighTag,
+          medium: t.priorityMediumTag,
+          low: t.priorityLowTag
+        };
+        const priorityBadge = `<span class="task-badge badge-${task.priority}">${priorityLabels[task.priority] || task.priority}</span>`;
+        
+        const dateFormatted = task.datetime ? `<span style="display:inline-flex;align-items:center;gap:4px;">${svgIcons.clock} ${formatDateTimeDisplay(task.datetime)}</span>` : '';
+
+        // Alt Görevler HTML (Alt görevler ana görevin hemen altına biraz sağdan başlayarak sıralı bir şekilde ve başlarında tek bir siyah nokta olacak şekilde görünür)
+        let subtasksHtml = '';
+        if (task.subtasks && task.subtasks.length > 0) {
+          subtasksHtml = `
+            <div class="subtasks-container">
+              ${task.subtasks.map(st => `
+                <div class="subtask-row">
+                  <span class="subtask-bullet" aria-hidden="true"></span>
+                  <input 
+                    type="checkbox" 
+                    class="subtask-checkbox" 
+                    ${st.completed ? 'checked' : ''} 
+                    onchange="toggleSubtask('${task.id}', '${st.id}')"
+                    aria-label="Alt görev tamamla"
+                  />
+                  <span class="subtask-text ${st.completed ? 'completed' : ''}">${escapeHtml(st.text)}</span>
+                  <button type="button" class="btn-subtask-del" onclick="deleteSubtask('${task.id}', '${st.id}')" title="${t.btnDelete}" aria-label="Alt görevi sil">${svgIcons.close}</button>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        }
+
+        // Yönetim Aksiyonları
+        let actionsHtml = '';
+        if (isManageMode) {
+          actionsHtml = `
+            <div class="task-actions">
+              <button class="btn btn-small" onclick="openEditModal('${task.id}')" title="${t.btnEdit}">
+                ${svgIcons.edit} <span>${t.btnEdit}</span>
+              </button>
+              <button class="btn btn-small btn-danger" onclick="deleteTask('${task.id}')" title="${t.btnDelete}">
+                ${svgIcons.trash} <span>${t.btnDelete}</span>
+              </button>
+            </div>
+          `;
+        }
+
+        return `
+          <div class="task-item" id="item_${task.id}">
+            <div class="task-header-row">
+              <div class="task-main-content">
+                <input 
+                  type="checkbox" 
+                  class="newspaper-checkbox" 
+                  ${isChecked} 
+                  onchange="toggleTask('${task.id}')" 
+                  aria-label="Görevi tamamlandı olarak işaretle"
+                />
+                <div style="flex: 1;">
+                  <div class="task-title ${completedClass}">${escapeHtml(task.title)}</div>
+                  <div class="task-metadata">
+                    ${priorityBadge}
+                    ${dateFormatted}
+                    ${task.completed && task.completedDate ? `<span style="display:inline-flex;align-items:center;gap:4px;">${svgIcons.check} ${t.lblCompletedTasks}: ${task.completedDate}</span>` : ''}
+                    ${task.subtasks && task.subtasks.length > 0 ? `<span>(${task.subtasks.filter(s => s.completed).length}/${task.subtasks.length} ${t.subtaskProgress})</span>` : ''}
+                  </div>
+                </div>
+              </div>
+              ${actionsHtml}
+            </div>
+            ${subtasksHtml}
+          </div>
+        `;
+      }
+
+      function renderAll() {
+        renderStats();
+        renderArchiveLog();
+        filterAndRenderPureList();
+        renderManageList();
+      }
+
+      /* --- ONBOARDING (TEK SEFERLİK ANİMASYONLU SUNUM) --- */
+      function checkOnboarding() {
+        const hasSeen = localStorage.getItem(STORAGE_KEY_ONBOARDING);
+        if (!hasSeen) {
+          onboardingStep = 0;
+          showOnboardingModal();
+        }
+      }
+
+      function showOnboardingModal() {
+        const overlay = document.getElementById('onboardingOverlay');
+        overlay.classList.remove('hidden');
+        renderOnboardingStep();
+      }
+
+      function renderOnboardingStep() {
+        const t = translations[currentLang].onboarding;
+        const titleEl = document.getElementById('onboardingTitle');
+        const bodyEl = document.getElementById('onboardingBody');
+        const stampEl = document.getElementById('onboardingStamp');
+        const prevBtn = document.getElementById('onboardingPrevBtn');
+        const nextBtn = document.getElementById('onboardingNextBtn');
+        const finishBtn = document.getElementById('onboardingFinishBtn');
+
+        if (stampEl && t.stampText) {
+          stampEl.innerHTML = `${svgIcons.star} <span style="margin: 0 4px;">${t.stampText}</span> ${svgIcons.star}`;
+        }
+
+        let stepData;
+        if (onboardingStep === 0) stepData = t.step1;
+        else if (onboardingStep === 1) stepData = t.step2;
+        else if (onboardingStep === 2) stepData = t.step3;
+        else stepData = t.step4;
+
+        titleEl.textContent = stepData.title;
+        bodyEl.innerHTML = `<p>${stepData.body}</p>`;
+
+        // Butonlar
+        prevBtn.style.display = onboardingStep === 0 ? 'none' : 'inline-flex';
+        prevBtn.textContent = t.btnPrev;
+        nextBtn.textContent = t.btnNext;
+        finishBtn.textContent = t.btnFinish;
+
+        if (onboardingStep === 3) {
+          nextBtn.style.display = 'none';
+          finishBtn.style.display = 'inline-flex';
+        } else {
+          nextBtn.style.display = 'inline-flex';
+          finishBtn.style.display = 'none';
+        }
+
+        // Noktalar
+        const dots = document.querySelectorAll('#onboardingDots .step-dot');
+        dots.forEach((d, i) => {
+          if (i === onboardingStep) d.classList.add('active');
+          else d.classList.remove('active');
+        });
+      }
+
+      function nextOnboardingStep() {
+        if (onboardingStep < 3) {
+          onboardingStep++;
+          renderOnboardingStep();
+        }
+      }
+
+      function prevOnboardingStep() {
+        if (onboardingStep > 0) {
+          onboardingStep--;
+          renderOnboardingStep();
+        }
+      }
+
+      function goToOnboardingStep(index) {
+        onboardingStep = index;
+        renderOnboardingStep();
+      }
+
+      function finishOnboarding() {
+        const overlay = document.getElementById('onboardingOverlay');
+        // Yavaş yavaş kaybolma efekti (fade-out)
+        overlay.style.opacity = '0';
+        overlay.style.transform = 'scale(0.98)';
+        setTimeout(() => {
+          overlay.classList.add('hidden');
+          overlay.style.opacity = '';
+          overlay.style.transform = '';
+          localStorage.setItem(STORAGE_KEY_ONBOARDING, 'true');
+        }, 500);
+      }
+
+      function reopenOnboarding() {
+        closeSettingsModal();
+        onboardingStep = 0;
+        showOnboardingModal();
+      }
+
+      /* --- AYARLAR MODAL YÖNETİMİ --- */
+      function openSettingsModal() {
+        document.getElementById('settingsModal').classList.add('open');
+      }
+
+      function closeSettingsModal() {
+        document.getElementById('settingsModal').classList.remove('open');
+      }
+
+      /* --- TOAST BİLDİRİMİ --- */
+      let toastTimeout;
+      function showToast(message) {
+        const toast = document.getElementById('appToast');
+        toast.textContent = message;
+        toast.classList.add('show');
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+          toast.classList.remove('show');
+        }, 2800);
+      }
+
+      // Güvenlik için HTML kaçış fonksiyonu
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      /* --- BAŞLATMA --- */
+      document.addEventListener('DOMContentLoaded', () => {
+        loadData();
+        applyTranslations();
+        setArchiveToday();
+        checkOnboarding();
+      });
+    </script>
+  </body>
+</html>
