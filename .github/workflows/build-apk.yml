@@ -38,19 +38,18 @@ jobs:
         run: |
           npm init -y
           npm install @capacitor/core @capacitor/cli @capacitor/android @capacitor/assets --save-dev
-          npx cap init "Gunluk Gorev Takibi" "com.gunlukgorev.app" --web-dir www
+          npx cap init "Todo News" "com.todonews.app" --web-dir www
           npx cap add android
 
       - name: Generate App Icons
         run: |
-          npx @capacitor/assets generate --android
+          # Icon dosyasının varlığını doğrular ve ikonları androide aktarır
+          npx @capacitor/assets generate --android --assetPath assets
 
       - name: Fix Kotlin Duplicate Classes
         run: |
           echo "android.enableJetifier=true" >> android/gradle.properties
           echo "android.useAndroidX=true" >> android/gradle.properties
-          
-          # gradle.build dosyasına kotlin-stdlib çakışma engelleyicisini ekler
           cat << 'EOF' >> android/app/build.gradle
           configurations.all {
               resolutionStrategy {
@@ -74,5 +73,5 @@ jobs:
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Gunluk-Gorev-Takibi-APK
+          name: Todo-News-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
